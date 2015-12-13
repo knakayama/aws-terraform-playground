@@ -1,0 +1,7 @@
+---
+- name: Provision Web server
+  hosts: tag_role_web
+  roles:
+    - { role: php,       tags: [ php ] }
+    - { role: apache,    tags: [ apache ] }
+    - { role: wordpress, tags: [ wordpress ] }
