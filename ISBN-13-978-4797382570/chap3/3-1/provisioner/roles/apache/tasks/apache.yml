@@ -1,0 +1,17 @@
+---
+- name: Install apache
+  yum:
+    name: httpd
+    state: present
+
+- name: Be sure apache enabled and started
+  service:
+    name: httpd
+    enabled: yes
+    state: started
+
+- name: Set check file
+  shell: |
+    uname -n > /var/www/html/index.html
+  always_run: yes
+  failed_when: no

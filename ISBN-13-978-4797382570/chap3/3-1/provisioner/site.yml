@@ -1,0 +1,8 @@
+---
+- name: Provision Web server
+  hosts: tag_Name_WP_WebAPP
+  roles:
+    - { role: php,       tags: [ php ] }
+    - { role: apache,    tags: [ apache ] }
+    - { role: wordpress, tags: [ wordpress ] }
+    - { role: rds,       tags: [ rds ] }

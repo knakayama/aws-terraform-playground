@@ -1,0 +1,14 @@
+---
+- name: Install mysql
+  yum:
+    name: mysql
+    state: present
+
+- name: Grant privileges
+  command: |
+    mysql \
+      --host="{{ rds_endpoint }}" \
+      --user=wordpress \
+      --password=wordpress \
+      -e "GRANT ALL PRIVILEGES ON `wordpress`.* TO 'wordpress'@'%';"
+  ignore_errors: yes

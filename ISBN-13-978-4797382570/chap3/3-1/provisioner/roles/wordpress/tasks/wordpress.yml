@@ -1,0 +1,31 @@
+---
+- name: Get latest wordpress
+  get_url:
+    url: http://ja.wordpress.org/latest-ja.tar.gz
+    dest: /tmp/latest-ja.tar.gz
+
+- name: Unarchive
+  unarchive:
+    src: /tmp/latest-ja.tar.gz
+    dest: /var/www/html
+    copy: no
+    creates: /var/www/html/wordpress/wp-config.php
+
+- name: Change owner to apache
+  file:
+    path: /var/www/html/wordpress
+    owner: apache
+    group: apache
+    recurse: yes
+
+- name: Copy wp-config.php
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: apache
+    group: apache
+    mode: 644
+  with_items:
+    - "{{ wp_files }}"
+  notify:
+    - Restart apache

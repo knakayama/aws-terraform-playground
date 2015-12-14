@@ -1,0 +1,4 @@
+---
+wp_files:
+  - { src: var/www/html/wordpress/wp-config.php, dest: /var/www/html/wordpress/wp-config.php }
+  - { src: var/www/html/wordpress/wp-includes/functions.php, dest: /var/www/html/wordpress/wp-includes/functions.php }
