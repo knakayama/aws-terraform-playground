@@ -1,5 +1,5 @@
 ---
-- name: Get latest wordpress
+- name: Fetch latest wordpress
   get_url:
     url: http://ja.wordpress.org/latest-ja.tar.gz
     dest: /tmp/latest-ja.tar.gz
