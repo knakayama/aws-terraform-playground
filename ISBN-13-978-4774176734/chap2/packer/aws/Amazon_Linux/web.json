@@ -1,0 +1,56 @@
+{
+  "variables": {
+    "aws_access_key":     "{{env `TF_VAR_access_key`}}",
+    "aws_secret_key":     "{{env `TF_VAR_secret_key`}}",
+    "ap_northeast_1_ami": "ami-383c1956",
+    "name":               "chap2-aws-linux-base",
+    "ap_norteast_1_name": "chap2-aws-ap-northeast-1-linux-web",
+    "ssh_username":       "ec2-user",
+    "scripts_dir":        "scripts/Amazon_Linux",
+    "dns_listen_addr":    "127.0.0.1"
+  },
+  "builders": [
+    {
+      "name":            "{{user `ap_norteast_1_name`}}",
+      "type":            "amazon-ebs",
+      "access_key":      "{{user `aws_access_key`}}",
+      "secret_key":      "{{user `aws_secret_key`}}",
+      "region":          "ap-northeast-1",
+      "vpc_id":          "vpc-2029b645",
+      "subnet_id":       "subnet-04720f73",
+      "source_ami":      "{{user `ap_northeast_1_ami`}}",
+      "instance_type":   "t2.micro",
+      "ssh_username":    "{{user `ssh_username`}}",
+      "ami_name":        "{{user `ap_norteast_1_name`}} {{timestamp}}",
+      "ami_description": "{{user `ap_norteast_1_name`}} AMI",
+      "run_tags":        { "ami-create": "{{user `ap_norteast_1_name`}}" },
+      "tags":            { "ami": "{{user `ap_norteast_1_name`}}" },
+      "ssh_private_ip":  false,
+      "ssh_pty":         true,
+      "associate_public_ip_address": true
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "echo {{user `ssh_username`}} | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
+      "inline": [
+        "mkdir -p /ops/{{user `scripts_dir`}}",
+        "chmod a+w /ops/{{user `scripts_dir`}}"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "../../{{user `scripts_dir`}}/.",
+      "destination": "/ops/{{user `scripts_dir`}}"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo {{user `ssh_username`}} | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
+      "inline": [
+        "bash /ops/{{user `scripts_dir`}}/bootstrap.sh",
+        "bash /ops/{{user `scripts_dir`}}/web.sh"
+      ]
+    }
+  ]
+}
