@@ -1,6 +1,6 @@
 ---
 - name: Provision Web server
-  hosts: tag_role_web
+  hosts: localhost
   roles:
     - { role: php,       tags: [ php ] }
     - { role: apache,    tags: [ apache ] }

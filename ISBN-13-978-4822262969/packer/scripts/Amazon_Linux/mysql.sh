@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-sudo yum install mysql-server -y
-sudo chkconfig mysqld on
-sudo service mysqld start
+yum install mysql-server -y
+chkconfig mysqld on
+service mysqld start
 mysql -uroot -e \
   "CREATE DATABASE wordpress DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;"
 mysql -uroot -e \
   "GRANT ALL on wordpress.* to wordpress@'%' identified by 'wordpress'"
-sudo mysqladmin flush-privileges
+mysqladmin flush-privileges
 
 # Local Variables:
 # mode: Shell-Script
