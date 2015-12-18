@@ -1,4 +1,0 @@
-ansible
-keys/*
-!keys/.gitkeep
-config.yml
