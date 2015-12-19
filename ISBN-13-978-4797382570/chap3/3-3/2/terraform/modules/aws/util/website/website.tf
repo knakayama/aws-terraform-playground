@@ -1,14 +1,16 @@
-variable "name"        { default = "s3" }
+variable "name"        { default = "website" }
 variable "policy_file" { }
 variable "acl"         { }
 variable "htmls"       { }
+variable "domain"      { }
+variable "sub_domain"  { }
 
 variable "rel_path" {
-  default = "../../../modules/aws/compute/s3/"
+  default = "../../../modules/aws/util/website/"
 }
 
 # FIXME:
-#resource "aws_cloudformation_stack" "s3" {
+#resource "aws_cloudformation_stack" "website" {
 #  name          = "${var.name}"
 #  template_body = <<STACK
 #{
@@ -63,7 +65,7 @@ variable "rel_path" {
 #STACK
 #}
 
-resource "template_file" "s3" {
+resource "template_file" "website" {
   template = "${file(concat(var.rel_path, var.policy_file))}"
 
   vars {
@@ -71,11 +73,11 @@ resource "template_file" "s3" {
   }
 }
 
-resource "aws_s3_bucket" "s3" {
+resource "aws_s3_bucket" "website" {
   bucket        = "${var.name}"
   acl           = "${var.acl}"
   force_destroy = true
-  policy        = "${template_file.s3.rendered}"
+  policy        = "${template_file.website.rendered}"
 
   website {
     index_document = "index.html"
@@ -83,12 +85,25 @@ resource "aws_s3_bucket" "s3" {
   }
 }
 
-resource "aws_s3_bucket_object" "s3" {
+resource "aws_s3_bucket_object" "website" {
   count        = "${length(split(",", var.htmls))}"
-  bucket       = "${aws_s3_bucket.s3.bucket}"
+  bucket       = "${aws_s3_bucket.website.bucket}"
   key          = "${element(split(",", var.htmls), count.index)}"
   source       = "${concat(var.rel_path, element(split(",", var.htmls), count.index))}"
   content_type = "text/html"
 }
 
-output "website_endpoint" { value = "${aws_s3_bucket.s3.website_endpoint}" }
+resource "aws_route53_zone" "website" {
+  name = "${var.domain}"
+}
+
+resource "aws_route53_record" "website" {
+  zone_id = "${aws_route53_zone.website.zone_id}"
+  name    = "${var.sub_domain}.${var.domain}"
+  type    = "CNAME"
+  ttl     = "300"
+  records = ["${aws_s3_bucket.website.website_endpoint}"]
+}
+
+output "s3_website_endpoint" { value = "${aws_s3_bucket.website.website_endpoint}" }
+output "route53_record_fqdn" { value = "${aws_route53_record.website.fqdn}" }
