@@ -6,7 +6,7 @@
       "Effect": "Allow",
       "Principal": "*",
       "Action": ["s3:GetObject"],
-      "Resource": ["arn:aws:s3:::s3.knakayama.io/*"]
+      "Resource": ["arn:aws:s3:::${backet_name}/*"]
     }
   ]
 }
