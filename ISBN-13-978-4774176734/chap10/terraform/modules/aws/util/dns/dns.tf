@@ -8,7 +8,7 @@ resource "aws_route53_zone" "dns" {
 
 resource "aws_route53_record" "dns" {
   zone_id = "${aws_route53_zone.dns.zone_id}"
-  name    = "${sub_domain}"
+  name    = "${var.sub_domain}"
   type    = "A"
   ttl     = 60
   records = ["${var.web_public_ip}"]
