@@ -1,0 +1,5 @@
+---
+- name: Provision Web server
+  hosts: localhost
+  roles:
+    - { role: custom_metric,  tags: [ custom_metric ] }

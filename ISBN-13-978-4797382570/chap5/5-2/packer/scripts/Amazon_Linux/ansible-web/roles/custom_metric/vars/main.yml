@@ -1,0 +1,4 @@
+---
+base_url: http://aws-cloudwatch.s3.amazonaws.com/downloads
+script: CloudWatchMonitoringScripts
+version: 1.2.1

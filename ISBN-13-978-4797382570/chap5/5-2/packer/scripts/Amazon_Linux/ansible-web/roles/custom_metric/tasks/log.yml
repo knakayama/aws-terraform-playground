@@ -1,0 +1,21 @@
+---
+- name: Install package
+  yum:
+    name: awslogs
+    state: present
+
+- name: Copy config
+  copy:
+    src: etc/awslogs/awscli.conf
+    dest: /etc/awslogs/awscli.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - Restart awslogs
+
+- name: Be sure awslogs enabled and started
+  service:
+    name: awslogs
+    enabled: yes
+    state: started

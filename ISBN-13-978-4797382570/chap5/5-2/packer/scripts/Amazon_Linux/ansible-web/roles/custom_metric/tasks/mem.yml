@@ -1,0 +1,26 @@
+---
+- name: Install packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - perl-Switch
+    - perl-Sys-Syslog
+    - perl-LWP-Protocol-https
+    - perl-DateTime
+
+- name: Get script
+  get_url:
+    url: "{{ base_url }}/{{ script }}-{{ version }}.zip"
+    dest: "/tmp/{{ script }}.zip"
+
+- name: Unarchive script
+  unarchive:
+    src: "/tmp/{{ script }}.zip"
+    dest: /tmp
+
+- name: Append new cron job
+  lineinfile:
+    dest: /etc/crontab
+    line: "5 * * * * root /tmp/aws-scripts-mon/mon-put-instance-data.pl --mem-util --verbose >/dev/null"
+    state: present
