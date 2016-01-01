@@ -1,19 +1,19 @@
-variable name                  { }
-variable region                { }
-variable site_public_key       { }
+variable "name"            { }
+variable "region"          { }
+variable "site_public_key" { }
 
-variable vpc_cidr              { }
-variable azs                   { }
-variable private_subnets       { }
-variable public_subnets        { }
+variable "vpc_cidr"        { }
+variable "azs"             { }
+variable "private_subnets" { }
+variable "public_subnets"  { }
 
-variable bastion_instance_type   { }
-variable bastion_instance_ami_id { }
-variable nat_instance_type       { }
-variable nat_instance_ami_id     { }
+variable "bastion_instance_type"   { }
+variable "bastion_instance_ami_id" { }
+variable "nat_instance_type"       { }
+variable "nat_instance_ami_id"     { }
 
-variable mysql_instance_type   { }
-variable mysql_instance_ami_id { }
+variable "mysql_instance_type"   { }
+variable "mysql_instance_ami_id" { }
 
 provider "aws" {
   region = "${var.region}"

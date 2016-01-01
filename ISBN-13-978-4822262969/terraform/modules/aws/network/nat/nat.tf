@@ -1,13 +1,13 @@
-variable name              { default = "nat" }
-variable vpc_id            { }
-variable vpc_cidr          { }
-variable region            { }
-variable public_subnets    { }
-variable public_subnet_ids { }
-variable private_subnets   { }
-variable key_name          { }
-variable instance_type     { }
-variable ami_id            { }
+variable "name"              { default = "nat" }
+variable "vpc_id"            { }
+variable "vpc_cidr"          { }
+variable "region"            { }
+variable "public_subnets"    { }
+variable "public_subnet_ids" { }
+variable "private_subnets"   { }
+variable "key_name"          { }
+variable "instance_type"     { }
+variable "ami_id"            { }
 
 resource "aws_security_group" "nat" {
   name        = "${var.name}"

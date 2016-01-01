@@ -23,7 +23,7 @@ module "public_subnet" {
   source = "./public_subnet"
 
   name   = "${var.name}-public"
-  vpc_id = "${module.vpc.vpc_id}"
+  vpc_id = "${module.vpc.id}"
   cidrs  = "${var.public_subnets}"
   azs    = "${var.azs}"
 }
@@ -32,8 +32,8 @@ module "bastion" {
   source = "./bastion"
 
   name              = "${var.name}-bastion"
-  vpc_id            = "${module.vpc.vpc_id}"
-  vpc_cidr          = "${module.vpc.vpc_cidr}"
+  vpc_id            = "${module.vpc.id}"
+  vpc_cidr          = "${module.vpc.cidr_block}"
   region            = "${var.region}"
   public_subnet_ids = "${module.public_subnet.subnet_ids}"
   key_name          = "${var.key_name}"
@@ -45,8 +45,8 @@ module "nat" {
   source = "./nat"
 
   name              = "${var.name}-nat"
-  vpc_id            = "${module.vpc.vpc_id}"
-  vpc_cidr          = "${module.vpc.vpc_cidr}"
+  vpc_id            = "${module.vpc.id}"
+  vpc_cidr          = "${module.vpc.cidr_block}"
   region            = "${var.region}"
   public_subnets    = "${var.public_subnets}"
   public_subnet_ids = "${module.public_subnet.subnet_ids}"
@@ -60,7 +60,7 @@ module "private_subnet" {
   source = "./private_subnet"
 
   name   = "${var.name}-private"
-  vpc_id = "${module.vpc.vpc_id}"
+  vpc_id = "${module.vpc.id}"
   cidrs  = "${var.private_subnets}"
   azs    = "${var.azs}"
 
@@ -68,7 +68,7 @@ module "private_subnet" {
 }
 
 resource "aws_network_acl" "acl" {
-  vpc_id     = "${module.vpc.vpc_id}"
+  vpc_id     = "${module.vpc.id}"
   subnet_ids = ["${concat(split(",", module.public_subnet.subnet_ids), split(",", module.private_subnet.subnet_ids))}"]
 
   ingress {
@@ -93,8 +93,8 @@ resource "aws_network_acl" "acl" {
 }
 
 # VPC
-output "vpc_id"   { value = "${module.vpc.vpc_id}" }
-output "vpc_cidr" { value = "${module.vpc.vpc_cidr}" }
+output "vpc_id"         { value = "${module.vpc.id}" }
+output "vpc_cidr_block" { value = "${module.vpc.cidr_block}" }
 
 # Subnets
 output "public_subnet_ids"  { value = "${module.public_subnet.subnet_ids}" }
