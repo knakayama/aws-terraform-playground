@@ -9,62 +9,6 @@ variable "rel_path" {
   default = "../../../modules/aws/util/website/"
 }
 
-# FIXME:
-#resource "aws_cloudformation_stack" "website" {
-#  name          = "${var.name}"
-#  template_body = <<STACK
-#{
-#  "AWSTemplateFormatVersion": "2010-09-09",
-#  "Resources": {
-#    "StaticBucket": {
-#      "Type": "AWS::S3::Bucket",
-#      "Properties": {
-#        "BucketName": "chap3-3-1-mystaticsite-aws",
-#        "WebsiteConfiguration": {
-#          "IndexDocument": "index.html",
-#          "ErrorDocument": "error.html",
-#          "RoutingRules": [
-#            {
-#              "RedirectRule": {
-#                "ReplaceKeyPrefixWith": "foo/"
-#              },
-#              "RoutingRuleCondition": {
-#                "KeyPrefixEquals": "bar/"
-#              }
-#            }
-#          ]
-#        }
-#      }
-#    },
-#    "StaticBucketPolicy": {
-#      "Type": "AWS::S3::BucketPolicy",
-#      "Properties": {
-#        "Bucket": {
-#          "Ref": "StaticBucket"
-#        },
-#        "PolicyDocument": {
-#          "Statement": [
-#            {
-#              "Effect": "Allow",
-#              "Principal": {
-#                "AWS": "*"
-#              },
-#              "Action": [
-#                "s3:GetObject"
-#              ],
-#              "Resource": {
-#                "Fn::Join": ["", ["arn:aws:s3:::", {"Ref": "StaticBucket"}, "/*"]]
-#              }
-#            }
-#          ]
-#        }
-#      }
-#    }
-#  }
-#}
-#STACK
-#}
-
 resource "template_file" "website_policy" {
   template = "${file(concat(var.rel_path, var.policy_file))}"
 
@@ -100,13 +44,18 @@ resource "aws_route53_zone" "website" {
 resource "aws_route53_record" "website" {
   zone_id = "${aws_route53_zone.website.zone_id}"
   name    = "${var.sub_domain}.${var.domain}"
-  type    = "CNAME"
-  ttl     = "300"
-  records = ["${aws_s3_bucket.website.website_endpoint}"]
+  type    = "A"
+
+  alias {
+    name    = "${aws_s3_bucket.website.website_domain}"
+    zone_id = "${aws_s3_bucket.website.hosted_zone_id}"
+    evaluate_target_health = false
+  }
 }
 
 resource "template_file" "website_cloudfront" {
   template = "${file(concat(var.rel_path, "cloudfront.json.tpl"))}"
+  #template = "${file(concat(var.rel_path, "cloudfront.json.bak.tpl"))}"
 
   vars {
     id               = "${var.name}"
@@ -116,9 +65,15 @@ resource "template_file" "website_cloudfront" {
 }
 
 resource "aws_cloudformation_stack" "website" {
-  name          = "${var.name}"
+  name = "${var.name}"
   template_body = "${template_file.website_cloudfront.rendered}"
 }
+
+## FIXME: not work
+#resource "aws_cloudformation_stack" "website" {
+#  name = "${var.name}"
+#  template_body = "${template_file.website_cloudfront.rendered}"
+#}
 
 output "s3_website_endpoint" { value = "${aws_s3_bucket.website.website_endpoint}" }
 output "route53_record_fqdn" { value = "${aws_route53_record.website.fqdn}" }
