@@ -1,8 +1,8 @@
-variable name             { }
-variable vpc_cidr         { }
-variable azs              { }
-variable public_subnets   { }
-variable web_instance_ids { }
+variable "name"             { }
+variable "vpc_cidr"         { }
+variable "azs"              { }
+variable "public_subnets"   { }
+variable "web_instance_ids" { }
 
 module "vpc" {
   source = "./vpc"
@@ -31,7 +31,7 @@ module "load_balancer" {
 
 resource "aws_network_acl" "acl" {
   vpc_id     = "${module.vpc.vpc_id}"
-  subnet_ids = ["${concat(split(",", module.public_subnet.subnet_ids))}"]
+  subnet_ids = ["${split(",", module.public_subnet.subnet_ids)}"]
 
   ingress {
     protocol   = "-1"
@@ -41,6 +41,7 @@ resource "aws_network_acl" "acl" {
     from_port  = 0
     to_port    = 0
   }
+
   egress {
     protocol   = "-1"
     rule_no    = 100

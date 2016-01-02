@@ -1,9 +1,9 @@
-variable name             { }
-variable vpc_cidr         { }
-variable azs              { }
-variable public_subnets   { }
-variable private_subnets  { }
-variable web_instance_ids { }
+variable "name"             { }
+variable "vpc_cidr"         { }
+variable "azs"              { }
+variable "public_subnets"   { }
+variable "private_subnets"  { }
+variable "web_instance_ids" { }
 
 module "vpc" {
   source = "./vpc"

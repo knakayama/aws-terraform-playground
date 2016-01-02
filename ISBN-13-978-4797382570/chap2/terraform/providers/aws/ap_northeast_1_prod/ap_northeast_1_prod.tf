@@ -1,13 +1,13 @@
-variable name            { }
-variable region          { }
-variable site_public_key { }
+variable "name"            { }
+variable "region"          { }
+variable "site_public_key" { }
 
-variable vpc_cidr       { }
-variable azs            { }
-variable public_subnets { }
+variable "vpc_cidr"       { }
+variable "azs"            { }
+variable "public_subnets" { }
 
-variable web_instance_type   { }
-variable web_instance_ami_id { }
+variable "web_instance_type"   { }
+variable "web_instance_ami_id" { }
 
 provider "aws" {
   region = "${var.region}"

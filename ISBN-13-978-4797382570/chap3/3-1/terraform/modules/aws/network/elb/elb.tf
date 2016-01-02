@@ -9,8 +9,8 @@ variable "rel_path" {
 
 resource "aws_iam_server_certificate" "elb" {
   name             = "${var.name}"
-  certificate_body = "${file(concat(var.rel_path, "certs/server.crt"))}"
   private_key      = "${file(concat(var.rel_path, "certs/server.key"))}"
+  certificate_body = "${file(concat(var.rel_path, "certs/server.crt"))}"
 }
 
 resource "aws_security_group" "elb" {
@@ -44,8 +44,8 @@ resource "aws_security_group" "elb" {
 
 resource "aws_elb" "elb" {
   name                        = "${var.name}"
-  subnets                     = ["${concat(split(",", var.public_subnet_ids))}"]
-  instances                   = ["${concat(split(",", var.web_instance_ids))}"]
+  subnets                     = ["${split(",", var.public_subnet_ids)}"]
+  instances                   = ["${split(",", var.web_instance_ids)}"]
   cross_zone_load_balancing   = true
   connection_draining         = true
   connection_draining_timeout = 300
@@ -54,8 +54,8 @@ resource "aws_elb" "elb" {
   listener {
     instance_port      = 443
     instance_protocol  = "https"
-    lb_port            = 443
-    lb_protocol        = "https"
+    lb_port            = 80
+    lb_protocol        = "http"
     ssl_certificate_id = "${aws_iam_server_certificate.elb.arn}"
   }
 
@@ -63,7 +63,7 @@ resource "aws_elb" "elb" {
     healthy_threshold   = 10
     unhealthy_threshold = 2
     timeout             = 5
-    target              = "HTTP:443/index.html"
+    target              = "HTTP:80/index.html"
     interval            = 30
   }
 
@@ -71,9 +71,9 @@ resource "aws_elb" "elb" {
 }
 
 resource "aws_lb_cookie_stickiness_policy" "elb" {
-  name                     = "${var.name}"
-  load_balancer            = "${aws_elb.elb.id}"
-  lb_port                  = 443
+  name          = "${var.name}"
+  lb_port       = 80
+  load_balancer = "${aws_elb.elb.id}"
   cookie_expiration_period = 1800
 }
 

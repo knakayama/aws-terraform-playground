@@ -1,9 +1,9 @@
-variable name             { default = "web" }
-variable vpc_id           { }
-variable key_name         { }
-variable public_subnet_id { }
-variable instance_type    { }
-variable instance_ami_id  { }
+variable "name"             { default = "web" }
+variable "vpc_id"           { }
+variable "key_name"         { }
+variable "public_subnet_id" { }
+variable "instance_type"    { }
+variable "instance_ami_id"  { }
 
 resource "aws_security_group" "web" {
   name        = "${var.name}"

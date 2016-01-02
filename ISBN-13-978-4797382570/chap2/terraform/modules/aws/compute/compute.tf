@@ -1,10 +1,10 @@
-variable name                { }
-variable vpc_id              { }
-variable key_name            { }
-variable azs                 { }
-variable public_subnet_ids   { }
-variable web_instance_type   { }
-variable web_instance_ami_id { }
+variable "name"                { }
+variable "vpc_id"              { }
+variable "key_name"            { }
+variable "azs"                 { }
+variable "public_subnet_ids"   { }
+variable "web_instance_type"   { }
+variable "web_instance_ami_id" { }
 
 module "web" {
   source = "./web"

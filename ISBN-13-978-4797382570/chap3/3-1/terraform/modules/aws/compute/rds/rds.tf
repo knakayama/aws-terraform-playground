@@ -17,7 +17,7 @@ resource "aws_security_group" "rds" {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = ["${concat(split(",", var.public_subnets))}"]
+    cidr_blocks = ["${split(",", var.public_subnets)}"]
   }
 
   egress {
@@ -32,7 +32,7 @@ resource "aws_security_group" "rds" {
 
 resource "aws_db_subnet_group" "rds" {
   name        = "${var.name}"
-  subnet_ids  = ["${concat(split(",", var.private_subnet_ids))}"]
+  subnet_ids  = ["${split(",", var.private_subnet_ids)}"]
   description = "RDS db subnet group"
 
   tags { Name = "${var.name}" }
