@@ -5,10 +5,6 @@ variable "public_subnet_id" { }
 variable "instance_type"    { }
 variable "instance_ami_id"  { }
 
-variable "rel_path" {
-  default = "../../../modules/aws/compute/web/"
-}
-
 resource "aws_security_group" "web" {
   name        = "${var.name}-web"
   vpc_id      = "${var.vpc_id}"
@@ -33,13 +29,13 @@ resource "aws_security_group" "web" {
 
 resource "aws_iam_role" "web" {
   name = "${var.name}"
-  assume_role_policy = "${file(concat(var.rel_path, "assume_role_policy.json"))}"
+  assume_role_policy = "${file(concat(path.module, "/", "assume_role_policy.json"))}"
 }
 
 resource "aws_iam_role_policy" "web" {
   name   = "${var.name}"
   role   = "${aws_iam_role.web.id}"
-  policy = "${file(concat(var.rel_path, "role_policy.json"))}"
+  policy = "${file(concat(path.module, "/", "role_policy.json"))}"
 }
 
 resource "aws_iam_instance_profile" "web" {

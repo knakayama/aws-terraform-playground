@@ -6,10 +6,6 @@ variable "public_subnet_ids" { }
 variable "instance_type"     { }
 variable "instance_ami_id"   { }
 
-variable "rel_path" {
-  default = "../../../modules/aws/compute/web/"
-}
-
 resource "aws_security_group" "elb" {
   name        = "${var.name}-elb"
   vpc_id      = "${var.vpc_id}"
@@ -102,8 +98,8 @@ EOT
 
 resource "aws_iam_server_certificate" "elb" {
   name        = "${var.name}"
-  private_key = "${file(concat(var.rel_path, "certs/server.key"))}"
-  certificate_body = "${file(concat(var.rel_path, "certs/server.crt"))}"
+  private_key = "${file(concat(path.module, "/", "certs/server.key"))}"
+  certificate_body = "${file(concat(path.module, "/", "certs/server.crt"))}"
 }
 
 resource "aws_eip" "web" {

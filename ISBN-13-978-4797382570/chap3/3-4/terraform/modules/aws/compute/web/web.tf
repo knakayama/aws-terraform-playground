@@ -8,10 +8,6 @@ variable "desired_capacity"  { }
 variable "max_size"          { }
 variable "min_size"          { }
 
-variable "rel_path" {
-  default = "../../../modules/aws/compute/web/"
-}
-
 resource "aws_security_group" "web" {
   name        = "${var.name}-web"
   vpc_id      = "${var.vpc_id}"
@@ -48,7 +44,7 @@ resource "aws_launch_configuration" "autoscaling" {
   key_name          = "${var.key_name}"
   security_groups   = ["${aws_security_group.web.id}"]
   enable_monitoring = true
-  user_data         = "${file(concat(var.rel_path, "user_data.sh"))}"
+  user_data         = "${file(concat(path.module, "/", "user_data.sh"))}"
   associate_public_ip_address = true
 
   root_block_device {

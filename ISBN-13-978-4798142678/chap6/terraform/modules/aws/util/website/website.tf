@@ -4,12 +4,8 @@ variable "htmls"       { }
 variable "domain"      { }
 variable "s3_domain"   { }
 
-variable "rel_path" {
-  default = "../../../modules/aws/util/website/"
-}
-
 resource "template_file" "website" {
-  template = "${file(concat(var.rel_path, var.policy_file))}"
+  template = "${file(concat(path.module, "/", var.policy_file))}"
 
   vars {
     backet_name = "${var.s3_domain}.${var.domain}"
@@ -32,7 +28,7 @@ resource "aws_s3_bucket_object" "website" {
   count        = "${length(split(",", var.htmls))}"
   bucket       = "${aws_s3_bucket.website.bucket}"
   key          = "${element(split(",", var.htmls), count.index)}"
-  source       = "${concat(var.rel_path, element(split(",", var.htmls), count.index))}"
+  source       = "${concat(path.module, "/", element(split(",", var.htmls), count.index))}"
   content_type = "text/html"
 }
 

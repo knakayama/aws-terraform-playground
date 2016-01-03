@@ -8,14 +8,10 @@ variable "desired_capacity"  { }
 variable "max_size"          { }
 variable "min_size"          { }
 
-variable "rel_path" {
-  default = "../../../modules/aws/compute/web/"
-}
-
 resource "aws_iam_server_certificate" "elb" {
   name             = "${var.name}-elb"
-  certificate_body = "${file(concat(var.rel_path, "certs/server.crt"))}"
-  private_key      = "${file(concat(var.rel_path, "certs/server.key"))}"
+  certificate_body = "${file(concat(path.module, "/", "certs/server.crt"))}"
+  private_key      = "${file(concat(path.module, "/", "certs/server.key"))}"
 }
 
 resource "aws_security_group" "elb" {

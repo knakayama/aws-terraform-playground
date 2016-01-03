@@ -3,10 +3,6 @@ variable "policy_file" { }
 variable "acl"         { }
 variable "htmls"       { }
 
-variable "rel_path" {
-  default = "../../../modules/aws/util/website/"
-}
-
 # FIXME:
 #resource "aws_cloudformation_stack" "website" {
 #  name          = "${var.name}"
@@ -64,7 +60,7 @@ variable "rel_path" {
 #}
 
 resource "template_file" "website" {
-  template = "${file(concat(var.rel_path, var.policy_file))}"
+  template = "${file(concat(path.module, "/", var.policy_file))}"
 
   vars {
     backet_name = "${var.name}"
@@ -87,7 +83,7 @@ resource "aws_s3_bucket_object" "website" {
   count        = "${length(split(",", var.htmls))}"
   bucket       = "${aws_s3_bucket.website.bucket}"
   key          = "${element(split(",", var.htmls), count.index)}"
-  source       = "${concat(var.rel_path, element(split(",", var.htmls), count.index))}"
+  source       = "${concat(path.module, "/", element(split(",", var.htmls), count.index))}"
   content_type = "text/html"
 }
 

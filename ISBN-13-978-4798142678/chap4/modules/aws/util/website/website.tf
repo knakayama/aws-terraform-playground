@@ -4,12 +4,8 @@ variable "htmls"       { }
 variable "domain"      { }
 variable "sub_domain"  { }
 
-variable "rel_path" {
-  default = "../../../modules/aws/util/website/"
-}
-
 resource "template_file" "website_redirected_to" {
-  template = "${file(concat(var.rel_path, var.policy_file))}"
+  template = "${file(concat(path.module, "/", var.policy_file))}"
 
   vars {
     backet_name = "${var.sub_domain}.${var.domain}"
@@ -17,7 +13,7 @@ resource "template_file" "website_redirected_to" {
 }
 
 resource "template_file" "website_redirected" {
-  template = "${file(concat(var.rel_path, var.policy_file))}"
+  template = "${file(concat(path.module, "/", var.policy_file))}"
 
   vars {
     backet_name = "${var.domain}"
@@ -51,7 +47,7 @@ resource "aws_s3_bucket_object" "website_redirected" {
   count        = "${length(split(",", var.htmls))}"
   bucket       = "${aws_s3_bucket.website_redirected_to.bucket}"
   key          = "${element(split(",", var.htmls), count.index)}"
-  source       = "${concat(var.rel_path, element(split(",", var.htmls), count.index))}"
+  source       = "${concat(path.module, "/", element(split(",", var.htmls), count.index))}"
   content_type = "text/html"
 }
 
