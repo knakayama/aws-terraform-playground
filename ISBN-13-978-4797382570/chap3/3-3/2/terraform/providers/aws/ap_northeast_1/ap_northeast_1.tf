@@ -15,11 +15,18 @@ module "website" {
 
   name        = "${var.name}"
   acl         = "${var.acl}"
-  policy_file = "${var.policy_file}"
   htmls       = "${var.htmls}"
-  domain      = "${var.domain}"
-  sub_domain  = "${var.sub_domain}"
+  policy_file = "${var.policy_file}"
 }
 
-output "s3_website_endpoint" { value = "${module.website.s3_website_endpoint}" }
-output "route53_record_fqdn" { value = "${module.website.route53_record_fqdn}" }
+module "dns" {
+  source = "../../../modules/aws/util/dns"
+
+  domain                 = "${var.domain}"
+  sub_domain             = "${var.sub_domain}"
+  website_domain         = "${module.website.domain}"
+  website_hosted_zone_id = "${module.website.hosted_zone_id}"
+}
+
+output "website_endpoint"    { value = "${module.website.endpoint}" }
+output "route53_record_fqdn" { value = "${module.dns.record_fqdn}" }

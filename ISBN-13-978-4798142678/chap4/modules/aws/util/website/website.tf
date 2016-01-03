@@ -27,8 +27,8 @@ resource "template_file" "website_redirected" {
 resource "aws_s3_bucket" "website_redirected_to" {
   bucket        = "${var.sub_domain}.${var.domain}"
   acl           = "${var.acl}"
-  force_destroy = true
   policy        = "${template_file.website_redirected_to.rendered}"
+  force_destroy = true
 
   website {
     index_document = "index.html"
@@ -39,15 +39,15 @@ resource "aws_s3_bucket" "website_redirected_to" {
 resource "aws_s3_bucket" "website_redirected" {
   bucket        = "${var.domain}"
   acl           = "${var.acl}"
-  force_destroy = true
   policy        = "${template_file.website_redirected.rendered}"
+  force_destroy = true
 
   website {
     redirect_all_requests_to = "${var.sub_domain}.${var.domain}"
   }
 }
 
-resource "aws_s3_bucket_object" "website_redirected_to" {
+resource "aws_s3_bucket_object" "website_redirected" {
   count        = "${length(split(",", var.htmls))}"
   bucket       = "${aws_s3_bucket.website_redirected_to.bucket}"
   key          = "${element(split(",", var.htmls), count.index)}"
@@ -55,30 +55,6 @@ resource "aws_s3_bucket_object" "website_redirected_to" {
   content_type = "text/html"
 }
 
-resource "aws_route53_zone" "website" {
-  name = "${var.domain}"
-}
-
-resource "aws_route53_record" "website_redirected_to" {
-  zone_id = "${aws_route53_zone.website.zone_id}"
-  name    = "${var.sub_domain}"
-  type    = "CNAME"
-  ttl     = 60
-  records = ["${aws_s3_bucket.website_redirected_to.website_endpoint}"]
-}
-
-resource "aws_route53_record" "website_redirected" {
-  zone_id = "${aws_route53_zone.website.zone_id}"
-  name    = "${var.domain}"
-  type    = "A"
-
-  alias {
-    name                   = "${aws_s3_bucket.website_redirected_to.website_domain}"
-    zone_id                = "${aws_s3_bucket.website_redirected_to.hosted_zone_id}"
-    evaluate_target_health = false
-  }
-}
-
-output "s3_website_endpoint_redirected_to" { value = "${aws_s3_bucket.website_redirected_to.website_endpoint}" }
-output "s3_website_endpoint_redirected"    { value = "${aws_s3_bucket.website_redirected.website_endpoint}" }
-output "route53_record_fqdn" { value = "${aws_route53_record.website_redirected_to.fqdn}" }
+output "endpoint_redirected_to"    { value = "${aws_s3_bucket.website_redirected_to.website_endpoint}" }
+output "domain_redirected"         { value = "${aws_s3_bucket.website_redirected.website_domain}" }
+output "hosted_zone_id_redirected" { value = "${aws_s3_bucket.website_redirected.hosted_zone_id}" }

@@ -2,8 +2,6 @@ variable "name"        { default = "website" }
 variable "policy_file" { }
 variable "acl"         { }
 variable "htmls"       { }
-variable "domain"      { }
-variable "sub_domain"  { }
 
 variable "rel_path" {
   default = "../../../modules/aws/util/website/"
@@ -93,17 +91,6 @@ resource "aws_s3_bucket_object" "website" {
   content_type = "text/html"
 }
 
-resource "aws_route53_zone" "website" {
-  name = "${var.domain}"
-}
-
-resource "aws_route53_record" "website" {
-  zone_id = "${aws_route53_zone.website.zone_id}"
-  name    = "${var.sub_domain}.${var.domain}"
-  type    = "CNAME"
-  ttl     = "300"
-  records = ["${aws_s3_bucket.website.website_endpoint}"]
-}
-
-output "s3_website_endpoint" { value = "${aws_s3_bucket.website.website_endpoint}" }
-output "route53_record_fqdn" { value = "${aws_route53_record.website.fqdn}" }
+output "endpoint"       { value = "${aws_s3_bucket.website.website_endpoint}" }
+output "domain"         { value = "${aws_s3_bucket.website.website_domain}" }
+output "hosted_zone_id" { value = "${aws_s3_bucket.website.hosted_zone_id}" }
