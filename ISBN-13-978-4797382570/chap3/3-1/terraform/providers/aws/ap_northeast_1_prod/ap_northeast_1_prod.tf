@@ -33,7 +33,6 @@ module "network" {
   azs              = "${var.azs}"
   public_subnets   = "${var.public_subnets}"
   private_subnets  = "${var.private_subnets}"
-  web_instance_ids = "${module.compute.web_instance_ids}"
 }
 
 module "compute" {
@@ -53,7 +52,8 @@ module "compute" {
   rds_engine          = "${var.rds_engine}"
   rds_engine_ver      = "${var.rds_engine_ver}"
   rds_instance_type   = "${var.rds_instance_type}"
-  elb_sg_id           = "${module.network.elb_sg_id}"
 }
 
-output "elb_dns_name" { value = "${module.network.elb_dns_name}" }
+output "elb_dns_name"   { value = "${module.compute.elb_dns_name}" }
+output "web_public_ips" { value = "${module.compute.web_public_ips}" }
+output "rds_endpoint"   { value = "${module.compute.rds_endpoint}" }

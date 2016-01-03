@@ -18,5 +18,5 @@ module "web" {
   instance_ami_id   = "${var.web_instance_ami_id}"
 }
 
-output "web_public_ips"   { value = "${module.web.public_ips}" }
-output "web_instance_ids" { value = "${module.web.instance_ids}" }
+output "web_public_ips"   { value = "${module.web.web_public_ips}" }
+output "elb_dns_name"     { value = "${module.web.elb_dns_name}" }

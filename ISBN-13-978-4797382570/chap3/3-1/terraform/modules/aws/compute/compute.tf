@@ -12,7 +12,6 @@ variable "rds_password"        { }
 variable "rds_engine"          { }
 variable "rds_engine_ver"      { }
 variable "rds_instance_type"   { }
-variable "elb_sg_id"           { }
 
 module "rds" {
   source = "./rds"
@@ -38,8 +37,8 @@ module "web" {
   public_subnet_ids   = "${var.public_subnet_ids}"
   web_instance_type   = "${var.web_instance_type}"
   web_instance_ami_id = "${var.web_instance_ami_id}"
-  rds_endpoint        = "${module.rds.endpoint}"
-  elb_sg_id           = "${var.elb_sg_id}"
 }
 
-output "web_instance_ids" { value = "${module.web.instance_ids}" }
+output "web_public_ips" { value = "${module.web.web_public_ips}" }
+output "elb_dns_name"   { value = "${module.web.elb_dns_name}" }
+output "rds_endpoint"   { value = "${module.rds.endpoint}" }

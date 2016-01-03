@@ -9,4 +9,4 @@ resource "aws_vpc" "vpc" {
   tags { Name = "${var.name}" }
 }
 
-output "vpc_id" { value = "${aws_vpc.vpc.id}" }
+output "id" { value = "${aws_vpc.vpc.id}" }

@@ -6,6 +6,28 @@ variable "public_subnet_ids"  { }
 variable "instance_type"      { }
 variable "instance_ami_id"    { }
 
+resource "aws_security_group" "elb" {
+  name        = "${var.name}"
+  vpc_id      = "${var.vpc_id}"
+  description = "ELB security group"
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags { Name = "${var.name}" }
+}
+
 resource "aws_security_group" "web" {
   name        = "${var.name}"
   vpc_id      = "${var.vpc_id}"
@@ -34,9 +56,6 @@ resource "aws_security_group" "web" {
 }
 
 resource "aws_instance" "web" {
-  # FIXME: Cycle error
-  # * Cycle: module.compute.module.web.aws_instance.web (destroy), module.compute.module.web.var.public_subnet_ids, module.network.module.public_subnet.output.subnet_ids, module.network.output.public_subnet_ids, module.compute.var.public_subnet_ids, module.compute.module.web.aws_eip.web (destroy), module.network.module.public_subnet.aws_subnet.public (destroy), module.network.module.public_subnet.aws_subnet.public
-  #count                       = "${length(split(",", var.public_subnet_ids))}"
   count                       = "${length(split(",", var.azs))}"
   ami                         = "${var.instance_ami_id}"
   instance_type               = "${var.instance_type}"
@@ -63,11 +82,37 @@ EOT
 }
 
 resource "aws_eip" "web" {
-  #count    = "${length(split(",", var.public_subnet_ids))}"
   count    = "${length(split(",", var.azs))}"
   instance = "${element(aws_instance.web.*.id, count.index)}"
   vpc      = true
 }
 
-output public_ips   { value = "${join(",", aws_eip.web.*.public_ip)}" }
-output instance_ids { value = "${join(",", aws_instance.web.*.id)}" }
+resource "aws_elb" "elb" {
+  name                        = "${var.name}"
+  subnets                     = ["${split(",", var.public_subnet_ids)}"]
+  instances                   = ["${aws_instance.web.*.id}"]
+  security_groups             = ["${aws_security_group.elb.id}"]
+  connection_draining         = true
+  connection_draining_timeout = 300
+  cross_zone_load_balancing   = true
+
+  listener {
+    instance_port     = 80
+    instance_protocol = "http"
+    lb_port           = 80
+    lb_protocol       = "http"
+  }
+
+  health_check {
+    healthy_threshold   = 10
+    unhealthy_threshold = 2
+    timeout             = 5
+    target              = "HTTP:80/index.html"
+    interval            = 30
+  }
+
+  tags { Name = "${var.name}" }
+}
+
+output "web_public_ips" { value = "${join(",", aws_eip.web.*.public_ip)}" }
+output "elb_dns_name"   { value = "${aws_elb.elb.dns_name}" }

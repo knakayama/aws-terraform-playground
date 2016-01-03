@@ -25,7 +25,6 @@ module "network" {
   vpc_cidr         = "${var.vpc_cidr}"
   azs              = "${var.azs}"
   public_subnets   = "${var.public_subnets}"
-  web_instance_ids = "${module.compute.web_instance_ids}"
 }
 
 module "compute" {
@@ -47,6 +46,6 @@ Web:
   web_public_ips: "${join(" ", split(",", module.compute.web_public_ips))}"
 
 ELB:
-  elb_dns_name: "${module.network.elb_dns_name}"
+  elb_dns_name: "${module.compute.elb_dns_name}"
 EOT
 }
