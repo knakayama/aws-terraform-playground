@@ -176,7 +176,7 @@ resource "aws_autoscaling_policy" "autoscaling_remove" {
   autoscaling_group_name = "${aws_autoscaling_group.autoscaling.name}"
 }
 
-resource "aws_cloudwatch_metric_alarm" "scale-out-alarm" {
+resource "aws_cloudwatch_metric_alarm" "scale_out_alarm" {
   alarm_name          = "scale-out-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = 1
@@ -195,7 +195,7 @@ resource "aws_cloudwatch_metric_alarm" "scale-out-alarm" {
   }
 }
 
-resource "aws_cloudwatch_metric_alarm" "scale-in-alarm" {
+resource "aws_cloudwatch_metric_alarm" "scale_in_alarm" {
   alarm_name          = "scale-in-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = 1

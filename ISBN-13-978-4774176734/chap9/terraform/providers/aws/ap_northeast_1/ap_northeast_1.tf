@@ -4,23 +4,19 @@ variable "site_public_key" { }
 
 variable "lc_instance_type"   { }
 variable "lc_instance_ami_id" { }
+variable "desired_capacity"   { }
+variable "max_size"           { }
+variable "min_size"           { }
 
 variable "vpc_cidr"       { }
 variable "public_subnets" { }
 variable "azs"            { }
 
-variable "lc_instance_type"   { }
-variable "lc_instance_ami_id" { }
-
-variable "desired_capacity" { }
-variable "max_size"         { }
-variable "min_size"         { }
-
 variable "domain"     { }
 variable "sub_domain" { }
 
 provider "aws" {
-  region     = "${var.region}"
+  region = "${var.region}"
 }
 
 resource "aws_key_pair" "site_key" {
