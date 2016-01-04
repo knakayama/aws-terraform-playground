@@ -109,10 +109,10 @@ resource "aws_elb" "elb" {
   connection_draining_timeout = 300
 
   listener {
-    instance_port      = 443
-    instance_protocol  = "https"
-    lb_port            = 80
-    lb_protocol        = "http"
+    lb_port            = 443
+    lb_protocol        = "https"
+    instance_port      = 80
+    instance_protocol  = "http"
     ssl_certificate_id = "${aws_iam_server_certificate.elb.arn}"
   }
 
