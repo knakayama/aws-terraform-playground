@@ -45,10 +45,10 @@ module "compute" {
 module "dns" {
   source = "../../../modules/aws/util/dns"
 
-  domain               = "${var.domain}"
-  sub_domain           = "${var.sub_domain}"
-  rds_website_endpoint = "${module.compute.rds_endpoint}"
+  domain       = "${var.domain}"
+  sub_domain   = "${var.sub_domain}"
+  rds_endpoint = "${module.compute.rds_endpoint}"
 }
 
-output "rds_endpoint"   { value = "${module.compute.rds_endpoint}" }
-output "route53_record_fqdn_wp" { value = "${module.dns.route53_record_fqdn}" }
+output "rds_endpoint"     { value = "${module.compute.rds_endpoint}" }
+output "route53_fqdn_rds" { value = "${module.dns.fqdn_rds}" }

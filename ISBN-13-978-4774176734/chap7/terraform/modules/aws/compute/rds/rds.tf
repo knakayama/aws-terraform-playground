@@ -49,7 +49,7 @@ resource "aws_db_parameter_group" "rds" {
 resource "aws_db_subnet_group" "rds" {
   name        = "${var.name}"
   subnet_ids  = ["${split(",", var.public_subnet_ids)}"]
-  description = "RDS db subnet group"
+  description = "RDS subnet group"
 
   tags { Name = "${var.name}" }
 }
@@ -77,4 +77,4 @@ resource "aws_db_instance" "rds" {
   tags { Name = "${var.name}" }
 }
 
-output "endpoint"    { value = "${aws_db_instance.rds.endpoint}" }
+output "endpoint" { value = "${aws_db_instance.rds.endpoint}" }

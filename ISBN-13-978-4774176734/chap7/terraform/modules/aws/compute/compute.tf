@@ -22,4 +22,4 @@ module "rds" {
   family            = "${var.rds_family}"
 }
 
-output "rds_endpoint"    { value = "${module.rds.endpoint}" }
+output "rds_endpoint" { value = "${module.rds.endpoint}" }
