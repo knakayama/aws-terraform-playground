@@ -52,6 +52,6 @@ module "dns" {
   web_private_ips  = "${module.compute.web_private_ips}"
 }
 
-output "route53_record_fqdns" { value = "${module.dns.route53_record_fqdns}" }
-output "web_public_ips"       { value = "${module.compute.web_public_ips}" }
-output "web_private_ips"      { value = "${module.compute.web_private_ips}" }
+output "route53_fqdns"   { value = "${module.dns.fqdns}" }
+output "web_public_ips"  { value = "${module.compute.web_public_ips}" }
+output "web_private_ips" { value = "${module.compute.web_private_ips}" }

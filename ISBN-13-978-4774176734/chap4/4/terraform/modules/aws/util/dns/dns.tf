@@ -18,4 +18,4 @@ resource "aws_route53_record" "dns" {
   records = ["${element(split(",", var.web_private_ips), count.index)}"]
 }
 
-output "route53_record_fqdns" { value = "${join(",", aws_route53_record.dns.*.fqdn)}" }
+output "fqdns" { value = "${join(",", aws_route53_record.dns.*.fqdn)}" }

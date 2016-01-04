@@ -55,5 +55,5 @@ module "dns" {
   website_hosted_zone_id = "${module.website.hosted_zone_id}"
 }
 
-output "website_endpoint"     { value = "${module.website.endpoint}" }
-output "route53_record_fqdns" { value = "${module.dns.record_fqdns}" }
+output "website_endpoint" { value = "${module.website.endpoint}" }
+output "route53_fqdns"    { value = "${module.dns.fqdns}" }

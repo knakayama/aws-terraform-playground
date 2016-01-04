@@ -42,4 +42,4 @@ resource "aws_route53_record" "dns_secondary" {
   }
 }
 
-output "record_fqdns" { value = "${join(",", aws_route53_record.dns_primary.fqdn, aws_route53_record.dns_secondary.fqdn)}" }
+output "fqdns" { value = "${join(",", aws_route53_record.dns_primary.fqdn, aws_route53_record.dns_secondary.fqdn)}" }
