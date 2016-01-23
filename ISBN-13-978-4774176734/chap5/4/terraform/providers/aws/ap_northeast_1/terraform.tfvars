@@ -1,7 +1,6 @@
 # General
 name       = "chap5-4-prod"
 region     = "ap-northeast-1"
-account_id = "804256469719"
 
 # Network
 vpc_cidrs      = "172.16.0.0/16,172.17.0.0/16"
