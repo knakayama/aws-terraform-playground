@@ -9,7 +9,7 @@ resource "aws_route53_zone" "dns" {
 
 resource "aws_route53_record" "dns" {
   zone_id = "${aws_route53_zone.dns.zone_id}"
-  name    = "${sub_domain}"
+  name    = "${sub_domain}.${var.domain}"
   type    = "A"
 
   alias {

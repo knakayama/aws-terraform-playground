@@ -12,7 +12,7 @@ resource "aws_route53_zone" "dns" {
 resource "aws_route53_record" "dns" {
   count   = "${length(split(",", var.sub_domains))}"
   zone_id = "${element(aws_route53_zone.dns.*.zone_id, count.index)}"
-  name    = "${element(split(",", var.sub_domains), count.index)}"
+  name    = "${element(split(",", var.sub_domains), count.index)}.${var.domain}"
   type    = "A"
   ttl     = 60
   records = ["${element(split(",", var.web_private_ips), count.index)}"]
