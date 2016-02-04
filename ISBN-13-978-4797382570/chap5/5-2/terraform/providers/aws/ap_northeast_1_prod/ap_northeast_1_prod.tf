@@ -9,8 +9,10 @@ variable "vpc_cidr"      { }
 variable "public_subnet" { }
 variable "az"            { }
 
+variable "sns_topic_arn" { }
+
 provider "aws" {
-  region     = "${var.region}"
+  region = "${var.region}"
 }
 
 resource "aws_key_pair" "site_key" {
@@ -31,11 +33,13 @@ module "compute" {
   source = "../../../modules/aws/compute"
 
   name                = "${var.name}"
+  region              = "${var.region}"
   key_name            = "${aws_key_pair.site_key.key_name}"
   vpc_id              = "${module.network.vpc_id}"
   public_subnet_id    = "${module.network.public_subnet_id}"
   web_instance_type   = "${var.web_instance_type}"
   web_instance_ami_id = "${var.web_instance_ami_id}"
+  sns_topic_arn       = "${var.sns_topic_arn}"
 }
 
 output "web_public_ip" { value = "${module.compute.web_public_ip}" }
