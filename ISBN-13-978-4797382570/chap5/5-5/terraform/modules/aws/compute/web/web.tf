@@ -41,7 +41,7 @@ resource "aws_lambda_function" "lambda" {
   description   = "Notify to slack"
   role          = "${aws_iam_role.lambda.arn}"
   handler       = "index.handler"
-  runtime       = "nodejs"
+  runtime       = "python2.7"
 }
 
 resource "aws_sns_topic" "lambda" {
@@ -198,7 +198,10 @@ resource "aws_cloudwatch_metric_alarm" "web_scale_out" {
   namespace           = "AWS/EC2"
   statistic           = "Average"
   threshold           = 10
-  alarm_actions       = ["${aws_autoscaling_policy.web_add.arn}","${aws_sns_topic.lambda.arn}"]
+  alarm_actions       = [
+    "${aws_autoscaling_policy.web_add.arn}",
+    "${aws_sns_topic.lambda.arn}"
+  ]
 
   dimensions {
     AutoScalingGroupName = "${aws_autoscaling_group.web.name}"
@@ -214,14 +217,16 @@ resource "aws_cloudwatch_metric_alarm" "web_scale_in" {
   namespace           = "AWS/EC2"
   statistic           = "Average"
   threshold           = 5
-  alarm_actions       = ["${aws_autoscaling_policy.web_remove.arn}","${aws_sns_topic.lambda.arn}"]
+  alarm_actions       = [
+    "${aws_autoscaling_policy.web_remove.arn}",
+    "${aws_sns_topic.lambda.arn}"
+  ]
 
   dimensions {
     AutoScalingGroupName = "${aws_autoscaling_group.web.name}"
   }
 }
 
-# not work...
 resource "aws_autoscaling_lifecycle_hook" "web" {
     name                    = "web"
     default_result          = "CONTINUE"
