@@ -145,10 +145,6 @@ resource "aws_launch_configuration" "web" {
     volume_type = "gp2"
     volume_size = 8
   }
-
-  lifecycle {
-    create_before_destroy = true
-  }
 }
 
 resource "aws_autoscaling_group" "web" {
@@ -161,10 +157,6 @@ resource "aws_autoscaling_group" "web" {
   health_check_type         = "ELB"
   force_delete              = true
   load_balancers            = ["${aws_elb.elb.id}"]
-
-  lifecycle {
-    create_before_destroy = true
-  }
 
   tag {
     key   = "Name"
