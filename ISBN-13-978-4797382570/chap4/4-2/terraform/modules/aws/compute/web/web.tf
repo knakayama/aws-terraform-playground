@@ -59,7 +59,7 @@ resource "aws_instance" "web" {
   key_name                    = "${var.key_name}"
   iam_instance_profile        = "${aws_iam_instance_profile.web.id}"
   associate_public_ip_address = true
-  user_data                   = "${file(concat(path.module, "/user_data.sh"))}"
+  user_data                   = "${file(concat(path.module, "/cloud-init.yml"))}"
 
   root_block_device = {
     volume_type = "gp2"

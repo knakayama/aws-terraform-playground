@@ -38,11 +38,16 @@ resource "aws_instance" "web" {
   }
 
   user_data = <<EOT
-#!/bin/bash
+#cloud-config
+repo_update: true
+repo_upgrade: all
+timezone: "Asia/Tokyo"
 
-yum update -y
-yum install httpd -y
-service httpd start
+packages:
+  - httpd
+
+runcmd:
+  - service httpd start
 EOT
 
   tags { Name = "${var.name}" }

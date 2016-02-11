@@ -103,12 +103,17 @@ resource "aws_launch_configuration" "web" {
   }
 
   user_data = <<EOT
-#!/bin/bash
+#cloud-config
+repo_update: true
+repo_upgrade: all
+timezone: "Asia/Tokyo"
 
-yum update -y
-yum install httpd mysql -y
-service httpd start
-uname -n > /var/www/html/index.html
+packages:
+  - httpd
+
+runcmd:
+  - service httpd start
+  - uname -n > /var/www/html/index.html
 EOT
 }
 

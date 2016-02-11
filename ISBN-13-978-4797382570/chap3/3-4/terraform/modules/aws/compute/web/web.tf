@@ -44,7 +44,7 @@ resource "aws_launch_configuration" "autoscaling" {
   key_name          = "${var.key_name}"
   security_groups   = ["${aws_security_group.web.id}"]
   enable_monitoring = true
-  user_data         = "${file(concat(path.module, "/", "user_data.sh"))}"
+  user_data         = "${file(concat(path.module, "/", "cloud-init.yml"))}"
   associate_public_ip_address = true
 
   root_block_device {

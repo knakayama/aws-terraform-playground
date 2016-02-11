@@ -49,7 +49,7 @@ resource "aws_instance" "db" {
   key_name                    = "${var.key_name}"
   vpc_security_group_ids      = ["${aws_security_group.db.id}"]
   associate_public_ip_address = false
-  user_data                   = "${file(concat(path.module, "/db_user_data.sh"))}"
+  user_data                   = "${file(concat(path.module, "/cloud-init.yml"))}"
 
   root_block_device = {
     volume_type = "gp2"

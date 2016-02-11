@@ -41,7 +41,7 @@ resource "aws_instance" "web" {
   key_name                    = "${var.key_name}"
   vpc_security_group_ids      = ["${aws_security_group.web.id}"]
   associate_public_ip_address = true
-  user_data                   = "${file(concat(path.module, "/web_user_data.sh"))}"
+  user_data                   = "${file(concat(path.module, "/cloud-init.yml"))}"
 
   root_block_device = {
     volume_type = "gp2"

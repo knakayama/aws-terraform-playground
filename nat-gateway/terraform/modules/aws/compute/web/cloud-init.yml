@@ -1,0 +1,10 @@
+#cloud-config
+repo_update: true
+repo_upgrade: all
+timezone: "Asia/Tokyo"
+
+packages:
+  - httpd
+
+runcmd:
+  - service httpd start

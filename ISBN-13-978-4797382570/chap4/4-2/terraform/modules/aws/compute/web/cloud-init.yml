@@ -1,9 +1,10 @@
-#!/usr/bin/env bash
+#cloud-config
+repo_update: true
+repo_upgrade: all
+timezone: "Asia/Tokyo"
 
-yum update -y
-yum install httpd -y
-chkconfig httpd on
-service httpd start
+runcmd:
+  - gem install aws-sdk-core
 
 # Local Variables:
 # mode: Shell-Script
