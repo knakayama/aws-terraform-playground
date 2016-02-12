@@ -11,7 +11,7 @@
     copy: no
     creates: /usr/share/nginx/html/wordpress/wp-config.php
 
-- name: Change owner to apache
+- name: Change owner to nginx
   file:
     path: /usr/share/nginx/html/wordpress
     owner: nginx
