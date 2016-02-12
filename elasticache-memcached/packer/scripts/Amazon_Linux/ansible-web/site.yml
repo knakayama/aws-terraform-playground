@@ -1,0 +1,7 @@
+---
+- name: Provision Web server
+  hosts: localhost
+  roles:
+    - { role: php,       tags: [ php ] }
+    - { role: nginx,     tags: [ nginx ] }
+    - { role: wordpress, tags: [ wordpress ] }

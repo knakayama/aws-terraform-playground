@@ -1,0 +1,19 @@
+---
+- name: Get latest wordpress
+  get_url:
+    url: http://ja.wordpress.org/latest-ja.tar.gz
+    dest: /tmp/latest-ja.tar.gz
+
+- name: Unarchive
+  unarchive:
+    src: /tmp/latest-ja.tar.gz
+    dest: /usr/share/nginx/html
+    copy: no
+    creates: /usr/share/nginx/html/wordpress/wp-config.php
+
+- name: Change owner to apache
+  file:
+    path: /usr/share/nginx/html/wordpress
+    owner: nginx
+    group: nginx
+    recurse: yes

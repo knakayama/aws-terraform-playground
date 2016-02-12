@@ -1,0 +1,28 @@
+---
+- name: Install php packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "{{ php_packages }}"
+
+- name: Adjust php.ini
+  lineinfile:
+    dest: /etc/php.ini
+    state: present
+    create: yes
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  notify:
+    - Restart php-fpm
+  with_items:
+    - regexp: '^;?date.timezone ='
+      line: date.timezone = "Asia/Tokyo"
+    - regexp: '(;\s)?max_input_vars ='
+      line: max_input_vars = 2000
+
+- name: Be sure php-fpm enabled and started
+  service:
+    name: php-fpm
+    enabled: yes
+    state: started

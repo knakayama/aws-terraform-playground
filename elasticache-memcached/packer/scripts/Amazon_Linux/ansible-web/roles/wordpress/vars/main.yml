@@ -1,0 +1,4 @@
+---
+wp_files:
+  - { src: usr/share/nginx/html/wordpress/wp-config.php, dest: /usr/share/nginx/html/wordpress/wp-config.php }
+  - { src: usr/share/nginx/html/wordpress/wp-includes/functions.php, dest: /usr/share/nginx/html/wordpress/wp-includes/functions.php }
