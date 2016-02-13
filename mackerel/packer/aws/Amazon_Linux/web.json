@@ -38,6 +38,7 @@
       "run_tags":        { "ami-create": "{{user `ap_norteast_1_name`}}" },
       "tags":            { "ami": "{{user `ap_norteast_1_name`}}" },
       "ssh_private_ip":  false,
+      "ssh_pty":         true,
       "associate_public_ip_address": true
     }
   ],
