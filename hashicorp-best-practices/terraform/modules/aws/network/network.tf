@@ -35,7 +35,7 @@ module "public_subnet" {
   source = "./public_subnet"
 
   name   = "${var.name}-public"
-  vpc_id = "${module.vpc.vpc_id}"
+  vpc_id = "${module.vpc.id}"
   cidrs  = "${var.public_subnets}"
   azs    = "${var.azs}"
 }
@@ -44,8 +44,8 @@ module "bastion" {
   source = "./bastion"
 
   name              = "${var.name}-bastion"
-  vpc_id            = "${module.vpc.vpc_id}"
-  vpc_cidr          = "${module.vpc.vpc_cidr}"
+  vpc_id            = "${module.vpc.id}"
+  vpc_cidr          = "${module.vpc.cidr}"
   region            = "${var.region}"
   public_subnet_ids = "${module.public_subnet.subnet_ids}"
   key_name          = "${var.key_name}"
@@ -64,7 +64,7 @@ module "private_subnet" {
   source = "./private_subnet"
 
   name   = "${var.name}-private"
-  vpc_id = "${module.vpc.vpc_id}"
+  vpc_id = "${module.vpc.id}"
   cidrs  = "${var.private_subnets}"
   azs    = "${var.azs}"
 
@@ -82,7 +82,7 @@ module "ephemeral_subnets" {
   source = "./private_subnet"
 
   name   = "${var.name}-ephemeral"
-  vpc_id = "${module.vpc.vpc_id}"
+  vpc_id = "${module.vpc.id}"
   cidrs  = "${var.ephemeral_subnets}"
   azs    = "${var.azs}"
 
@@ -93,8 +93,8 @@ module "openvpn" {
   source = "./openvpn"
 
   name               = "${var.name}-openvpn"
-  vpc_id             = "${module.vpc.vpc_id}"
-  vpc_cidr           = "${module.vpc.vpc_cidr}"
+  vpc_id             = "${module.vpc.id}"
+  vpc_cidr           = "${module.vpc.cidr}"
   public_subnet_ids  = "${module.public_subnet.subnet_ids}"
   ssl_cert           = "${var.ssl_cert}"
   ssl_key            = "${var.ssl_key}"
@@ -113,7 +113,7 @@ module "openvpn" {
 }
 
 resource "aws_network_acl" "acl" {
-  vpc_id     = "${module.vpc.vpc_id}"
+  vpc_id     = "${module.vpc.id}"
   subnet_ids = ["${concat(split(",", module.public_subnet.subnet_ids), split(",", module.private_subnet.subnet_ids), split(",", module.ephemeral_subnets.subnet_ids))}"]
 
   ingress {
@@ -138,8 +138,8 @@ resource "aws_network_acl" "acl" {
 }
 
 # VPC
-output "vpc_id"   { value = "${module.vpc.vpc_id}" }
-output "vpc_cidr" { value = "${module.vpc.vpc_cidr}" }
+output "vpc_id"   { value = "${module.vpc.id}" }
+output "vpc_cidr" { value = "${module.vpc.cidr}" }
 
 # Subnets
 output "public_subnet_ids"    { value = "${module.public_subnet.subnet_ids}" }

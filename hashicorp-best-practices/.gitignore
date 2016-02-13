@@ -10,3 +10,5 @@ logs
 *.key
 *.pub
 *.pem
+keys/*
+!keys/.gitkeep

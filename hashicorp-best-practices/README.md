@@ -1,23 +1,133 @@
-## Best Practices Ops
+hashicorp/best-practices
+========================
 
-Below are the infrastructures we currently have best practices for. Navigate to each provider to see what will be provisioned.
+[hashicorp/best-practices](https://github.com/hashicorp/best-practices)の内容を勉強する。
 
-- [AWS](terraform/providers/aws/README.md)
+## memo
 
-### Getting Started
+### 全体像
 
-This repository contains best-practice infrastructures across different cloud providers, regions, environments, and operating systems.
+todo
 
-You can think of this as a library of Packer templates and Terraform modules that allow you to provision unique infrastructures by referencing the different templates and modules. We've tried to set this repository up in a way that we don't have to duplicate code, allowing templates and modules to be used across multiple environments.
+### Setup
 
-Each environment is a best practices guide for how to use HashiCorp tooling to provision that specific type of infrastructure. Use each as a reference when building your own infrastructure. The best way to get started is to pick an environment that resembles an infrastructure you are looking to build, get it up and running, then configure and modify it to meet your specific needs.
+#### Environment Variables
 
-No example will be exactly what you need, but it should provide you with enough examples to get you headed in the right direction.
+ローカルで動作させるためには以下の環境変数を設定する
 
-A couple things to keep in mind...
+* AWS_ACCESS_KEY_ID
+* AWS_SECRET_ACCESS_KEY
+* AWS_DEFAULT_REGION=ap-northeast-1
+* ATLAS_USERNAME
+* ATLAS_TOKEN
 
-- Each environment's README will reference different sections in [General Setup](https://github.com/hashicorp/atlas-examples/blob/master/setup/general.md) to get your environment properly setup to build the infrastructure at hand.
-- Each environment will assume you're using Atlas. If you plan on doing anything locally, there are portions of environments that may not work due to the extra features Atlas provides that we are taking advantage of.
-- Each environment's instructional documentation is based off of the assumption that certain information will be saved as environment variables. If you do not wish to use environment variables, there are different ways to pass this information, but you may have to take extra undocumented steps to get commands to work properly.
-- Any `packer push` commands must be performed in the base [packer/.](packer) directory.
-- Any `terraform push` commands must be performed in the appropriate Terraform environment directory (e.g. [terraform/providers/aws/us\_east\_1\_staging](terraform/providers/aws/us_east_1_staging)).
+#### Generate Keys and Certs
+
+```bash
+$ cd setup
+# General site key
+$ sh ./gen_key.sh site
+$ mv -i site* ../keys
+# Generate site and vault certs
+$ sh ./gen_cert.sh _YOUR_DOMAIN_ _YOUR_COMPANY_
+$ mv -i site* vault* ../keys/
+```
+
+#### Build Configuration
+
+`base` となるものとそれを利用するものをそれぞれ作る
+
+Go [New Build Configuration](https://atlas.hashicorp.com/builds/new), leave **Automatically build on version uploads** and **Connect build configuration to a GitHub repository** boxes _unchecked_.
+
+Name,Packer directory,Packer template,Environments
+aws-ap-northeast-1-ubuntu-base,hashicor-best-practices/packer,aws/ubuntu/base.json,ATLAS_USERNAME<br/>AWS_ACCESS_KEY_ID<br/>AWS_SECRET_ACCESS_KEY<br/>AWS_DEFAULT_REGION
+aws-ap-northeast-1-ubuntu-consul,hashicor-best-practices/packer,aws/ubuntu/consul.json,same as above
+
+### `packer/aws/ubuntu/base.json`
+
+```json
+"run_tags":        { "ami-create": "{{user `ap_northeast_1_name`}}" },
+```
+
+### `terraform/providers/aws/global/global.tf`
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateAccessKey",
+        "iam:CreateUser",
+        "iam:PutUserPolicy",
+        "iam:ListGroupsForUser",
+        "iam:ListUserPolicies",
+        "iam:ListAccessKeys",
+        "iam:ListAttachedUserPolicies",
+        "iam:DeleteAccessKey",
+        "iam:DeleteUserPolicy",
+        "iam:RemoveUserFromGroup",
+        "iam:DeleteUser"
+      ],
+      "Resource": [
+        "*"
+      ]
+    }
+  ]
+}
+```
+
+### `terraform/providers/aws/ap_northeast_1_prod/ap_northeast_1_prod.tf`
+
+#### `atlas` block
+
+https://www.terraform.io/docs/configuration/atlas.html
+
+```hcl
+atlas {
+  name = "${var.atlas_username}/${var.atlas_environment}"
+}
+```
+
+```hcl
+route_zone_id     = "${terraform_remote_state.aws_global.output.zone_id}"
+```
+
+#### `terraform_remote_state` resource
+
+http://qiita.com/atsaki/items/d4678c1d62093fef47ec
+
+```hcl
+resource "terraform_remote_state" "aws_global" {
+  backend = "atlas"
+
+  config {
+    name = "${var.atlas_username}/${var.atlas_aws_global}"
+  }
+
+  lifecycle { create_before_destroy = true }
+}
+```
+
+#### ephemeral_subnets
+
+```hcl
+# The reason for this is that ephemeral nodes (nodes that are recycled often like ASG nodes),
+# need to be in separate subnets from long-running nodes (like Elasticache and RDS) because
+# AWS maintains an ARP cache with a semi-long expiration time.
+
+# So if node A with IP 10.0.0.123 gets terminated, and node B comes in and picks up 10.0.0.123
+# in a relatively short period of time, the stale ARP cache entry will still be there,
+# so traffic will just fail to reach the new node.
+module "ephemeral_subnets" {
+  source = "./private_subnet"
+
+  name   = "${var.name}-ephemeral"
+  vpc_id = "${module.vpc.vpc_id}"
+  cidrs  = "${var.ephemeral_subnets}"
+  azs    = "${var.azs}"
+
+  nat_gateway_ids = "${module.nat.nat_gateway_ids}"
+}
+```
