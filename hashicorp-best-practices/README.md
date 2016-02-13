@@ -39,9 +39,15 @@ $ mv -i site* vault* ../keys/
 
 Go [New Build Configuration](https://atlas.hashicorp.com/builds/new), leave **Automatically build on version uploads** and **Connect build configuration to a GitHub repository** boxes _unchecked_.
 
-Name,Packer directory,Packer template,Environments
-aws-ap-northeast-1-ubuntu-base,hashicor-best-practices/packer,aws/ubuntu/base.json,ATLAS_USERNAME<br/>AWS_ACCESS_KEY_ID<br/>AWS_SECRET_ACCESS_KEY<br/>AWS_DEFAULT_REGION
-aws-ap-northeast-1-ubuntu-consul,hashicor-best-practices/packer,aws/ubuntu/consul.json,same as above
+`base` 以外は **Inject artifact ID during build** をつくる
+
+|Name                             |Packer directory              |Packer template        |Environments                                                                         |
+|---------------------------------|------------------------------|-----------------------|-------------------------------------------------------------------------------------|
+|aws-ap-northeast-1-ubuntu-base   |hashicor-best-practices/packer|aws/ubuntu/base.json   |ATLAS_USERNAME<br/>AWS_ACCESS_KEY_ID<br/>AWS_SECRET_ACCESS_KEY<br/>AWS_DEFAULT_REGION|
+|aws-ap-northeast-1-ubuntu-consul |hashicor-best-practices/packer|aws/ubuntu/consul.json |same as above                                                                        |
+|aws-ap-northeast-1-ubuntu-vault  |hashicor-best-practices/packer|aws/ubuntu/vault.json  |same as above                                                                        |
+|aws-ap-northeast-1-ubuntu-haproxy|hashicor-best-practices/packer|aws/ubuntu/haproxy.json|same as above                                                                        |
+|aws-ap-northeast-1-ubuntu-nodejs |hashicor-best-practices/packer|aws/ubuntu/nodejs.json |same as above                                                                        |
 
 ### `packer/aws/ubuntu/base.json`
 
