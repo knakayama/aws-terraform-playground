@@ -1,0 +1,43 @@
+apikey = "{{ mackerel_api_key }}"
+
+[plugin.metrics.apache2]
+command = "/usr/local/bin/mackerel-plugin-apache2 -p 1080"
+
+[plugin.metrics.linux]
+command = "/usr/local/bin/mackerel-plugin-linux"
+
+[plugin.metrics.mysql]
+command = "/usr/local/bin/mackerel-plugin-mysql -username={{ mysql_users.1.name }} -password={{ mysql_users.1.password }}"
+
+[plugin.checks.check_procs.postfix]
+command = "/usr/lib64/nagios/plugins/check_procs -w 1: -a master"
+
+[plugin.checks.check_procs.crond]
+command = "/usr/lib64/nagios/plugins/check_procs -w 1: -a crond"
+
+[plugin.checks.check_procs.rsyslogd]
+command = "/usr/lib64/nagios/plugins/check_procs -w 1: -a rsyslogd"
+
+[plugin.checks.check_procs.ntpd]
+command = "/usr/lib64/nagios/plugins/check_procs -w 1: -a ntpd"
+
+[plugin.checks.check_procs.httpd]
+command = "/usr/lib64/nagios/plugins/check_procs -w 1: -a httpd"
+
+[plugin.checks.check_procs.mysqld]
+command = "/usr/lib64/nagios/plugins/check_procs -w 1: -a mysqld"
+
+[plugin.checks.check_smtp]
+command = "/usr/lib64/nagios/plugins/check_smtp -w 0.1 -c 0.2 -t 1"
+
+[plugin.checks.check_ssh]
+command = "/usr/lib64/nagios/plugins/check_ssh -t 1 localhost"
+
+[plugin.checks.check_http]
+command = "/usr/lib64/nagios/plugins/check_http -w 0.1 -c 0.2 -t 1 -l localhost -s Ansible"
+
+[plugin.checks.check_mysql]
+command = "/usr/lib64/nagios/plugins/check_mysql -u {{ mysql_users.1.name }} -p {{ mysql_users.1.password }} -w 1 -c 2"
+
+[plugin.checks.check_ntp_time]
+command = "/usr/lib64/nagios/plugins/check_ntp_time -w 1 -c 3 -H ntp.jst.mfeed.ad.jp"

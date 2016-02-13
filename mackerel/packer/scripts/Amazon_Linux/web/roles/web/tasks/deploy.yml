@@ -1,0 +1,13 @@
+---
+- name: Copy the code from repository
+  git:
+    repo: "{{ repository }}"
+    dest: /var/www/html
+
+- name: Create the index.php file
+  template:
+    src: var/www/html/index.php.j2
+    dest: /var/www/html/index.php
+    owner: root
+    group: root
+    mode: 0644

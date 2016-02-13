@@ -1,0 +1,7 @@
+---
+mysqlservice: mysqld
+mysql_port: 3306
+dbname: foodb
+mysql_users:
+  - { name: foouser, password: abc, priv: '*.*:ALL', host: '%' }
+  - { name: monitor, password: passw0rd, priv: '*.*:SUPER,PROCESS,REPLICATION CLIENT', host: localhost }

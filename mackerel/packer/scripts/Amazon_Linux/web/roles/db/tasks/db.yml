@@ -1,0 +1,48 @@
+---
+- name: Install MySQL packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "{{ mysql_packages }}"
+
+- name: Create MySQL configuration file
+  template:
+    src: etc/my.cnf.j2
+    dest: /etc/my.cnf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - Restart mysqld
+
+- name: Configure MySQL paths
+  file:
+    path: "{{ item.path }}"
+    owner: mysql
+    group: mysql
+    mode: 0755
+    state: "{{ item.state }}"
+  with_items:
+    - "{{ mysql_paths }}"
+
+- name: Be sure mysqld enabled and started
+  service:
+    name: mysqld
+    enabled: yes
+    state: started
+
+- name: Create Application Database
+  mysql_db:
+    name: "{{ dbname }}"
+    state: present
+
+- name: Create Application DB User
+  mysql_user:
+    name: "{{ item.name }}"
+    password: "{{ item.password }}"
+    priv: "{{ item.priv }}"
+    host: "{{ item.host }}"
+    state: present
+  with_items:
+    - "{{ mysql_users }}"

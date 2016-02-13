@@ -1,0 +1,8 @@
+---
+mysql_packages:
+  - mysql-server
+  - MySQL-python27
+
+mysql_paths:
+  - { path: /var/log/mysqld.log, state: touch }
+  - { path: /var/run/mysqld, state: directory }

@@ -1,0 +1,8 @@
+---
+- name: Provision Web server
+  hosts: all
+  roles:
+    - { role: common,   tags: [ common ] }
+    - { role: db,       tags: [ db ] }
+    - { role: web,      tags: [ web ] }
+    - { role: mackerel, tags: [ mackerel ] }

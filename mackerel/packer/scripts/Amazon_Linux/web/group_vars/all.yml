@@ -1,0 +1,3 @@
+---
+ntpserver: ntp.nict.jp
+repository: https://github.com/bennojoy/mywebapp.git

@@ -2,3 +2,4 @@
 .envrc
 .terraform
 certs
+terraform.out

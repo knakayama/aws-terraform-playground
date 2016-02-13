@@ -1,0 +1,6 @@
+---
+packages:
+  - httpd
+  - php
+  - php-mysql
+  - git

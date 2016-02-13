@@ -1,0 +1,33 @@
+---
+- name: Copy mackerel repository
+  copy:
+    src: etc/yum.repos.d/mackerel.repo
+    dest: /etc/yum.repos.d/mackerel.repo
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Install packages
+  yum:
+    name: "{{ item }}"
+    update_cache: yes
+    disable_gpg_check: yes
+    state: present
+  with_items:
+    - "{{ packages }}"
+
+- name: Copy mackerel-agent config
+  template:
+    src: etc/mackerel-agent/mackerel-agent.conf.j2
+    dest: /etc/mackerel-agent/mackerel-agent.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - Restart mackerel-agent
+
+- name: Be sure mackerel-agent enabled and started
+  service:
+    name: mackerel-agent
+    enabled: yes
+    state: started

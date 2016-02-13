@@ -1,0 +1,23 @@
+---
+- name: Install packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "{{ packages }}"
+
+- name: Copy httpd config
+  copy:
+    src: etc/httpd/conf.d/status.conf
+    dest: /etc/httpd/conf.d/status.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - Restart httpd
+
+- name: Be sure httpd enabled and started
+  service:
+    name: httpd
+    enabled: yes
+    state: started
