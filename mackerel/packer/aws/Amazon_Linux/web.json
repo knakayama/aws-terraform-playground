@@ -6,7 +6,7 @@
     "atlas_username":     "{{env `ATLAS_USERNAME`}}",
     "ap_northeast_1_ami": "ami-383c1956",
     "name":               "aws-terraform-playground-mackerel",
-    "ap_norteast_1_name": "aws-terraform-playground-mackerel",
+    "ap_northeast_1_name": "aws-terraform-playground-mackerel",
     "ssh_username":       "ec2-user",
     "scripts_dir":        "scripts/Amazon_Linux",
     "dns_listen_addr":    "127.0.0.1",
@@ -22,7 +22,7 @@
   },
   "builders": [
     {
-      "name":            "{{user `ap_norteast_1_name`}}",
+      "name":            "{{user `ap_northeast_1_name`}}",
       "type":            "amazon-ebs",
       "access_key":      "{{user `aws_access_key`}}",
       "secret_key":      "{{user `aws_secret_key`}}",
@@ -33,10 +33,10 @@
       "instance_type":   "t2.micro",
       "ssh_username":    "{{user `ssh_username`}}",
       "ssh_timeout":     "10m",
-      "ami_name":        "{{user `ap_norteast_1_name`}} {{timestamp}}",
-      "ami_description": "{{user `ap_norteast_1_name`}} AMI",
-      "run_tags":        { "ami-create": "{{user `ap_norteast_1_name`}}" },
-      "tags":            { "ami": "{{user `ap_norteast_1_name`}}" },
+      "ami_name":        "{{user `ap_northeast_1_name`}} {{timestamp}}",
+      "ami_description": "{{user `ap_northeast_1_name`}} AMI",
+      "run_tags":        { "ami-create": "{{user `ap_northeast_1_name`}}" },
+      "tags":            { "ami": "{{user `ap_northeast_1_name`}}" },
       "ssh_private_ip":  false,
       "ssh_pty":         true,
       "associate_public_ip_address": true
@@ -77,7 +77,7 @@
   "post-processors": [
     {
       "type": "atlas",
-      "artifact": "{{user `atlas_username`}}/{{user `ap_norteast_1_name`}}",
+      "artifact": "{{user `atlas_username`}}/{{user `ap_northeast_1_name`}}",
       "artifact_type": "amazon.image",
       "metadata": {
         "created_at": "{{timestamp}}"
