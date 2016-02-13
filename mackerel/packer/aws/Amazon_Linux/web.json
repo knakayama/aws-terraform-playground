@@ -10,7 +10,7 @@
     "ssh_username":       "ec2-user",
     "scripts_dir":        "scripts/Amazon_Linux",
     "dns_listen_addr":    "127.0.0.1",
-    "mackerel_api_key":    "{{env `MACKEREL_API_KEY`}}"
+    "mackerel_api_key":   "{{env `MACKEREL_API_KEY`}}"
   },
   "push": {
     "name": "{{user `atlas_username`}}/{{user `name`}}",
@@ -32,6 +32,7 @@
       "source_ami":      "{{user `ap_northeast_1_ami`}}",
       "instance_type":   "t2.micro",
       "ssh_username":    "{{user `ssh_username`}}",
+      "ssh_timeout":     "10m",
       "ami_name":        "{{user `ap_norteast_1_name`}} {{timestamp}}",
       "ami_description": "{{user `ap_norteast_1_name`}} AMI",
       "run_tags":        { "ami-create": "{{user `ap_norteast_1_name`}}" },
@@ -75,7 +76,7 @@
   "post-processors": [
     {
       "type": "atlas",
-      "artifact": "{{user `atlas_username`}}/{{user `name`}}",
+      "artifact": "{{user `atlas_username`}}/{{user `ap_norteast_1_name`}}",
       "artifact_type": "amazon.image",
       "metadata": {
         "created_at": "{{timestamp}}"
