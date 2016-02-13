@@ -1,0 +1,3 @@
+prefix {
+  path = "service/nodejs"
+}
