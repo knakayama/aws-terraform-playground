@@ -1,16 +1,16 @@
 {
   "variables": {
-    "aws_access_key":     "{{env `AWS_ACCESS_KEY_ID`}}",
-    "aws_secret_key":     "{{env `AWS_SECRET_ACCESS_KEY`}}",
-    "aws_region":         "{{env `AWS_DEFAULT_REGION`}}",
-    "atlas_username":     "{{env `ATLAS_USERNAME`}}",
-    "ap_northeast_1_ami": "ami-383c1956",
-    "name":               "aws-terraform-playground-mackerel",
+    "aws_access_key":      "{{env `AWS_ACCESS_KEY_ID`}}",
+    "aws_secret_key":      "{{env `AWS_SECRET_ACCESS_KEY`}}",
+    "aws_region":          "{{env `AWS_DEFAULT_REGION`}}",
+    "atlas_username":      "{{env `ATLAS_USERNAME`}}",
+    "ap_northeast_1_ami":  "ami-383c1956",
+    "name":                "aws-mackerel",
     "ap_northeast_1_name": "aws-terraform-playground-mackerel",
-    "ssh_username":       "ec2-user",
-    "scripts_dir":        "scripts/Amazon_Linux",
-    "dns_listen_addr":    "127.0.0.1",
-    "mackerel_api_key":   "{{env `MACKEREL_API_KEY`}}"
+    "ssh_username":        "ec2-user",
+    "scripts_dir":         "scripts/Amazon_Linux",
+    "dns_listen_addr":     "127.0.0.1",
+    "mackerel_api_key":    "{{env `MACKEREL_API_KEY`}}"
   },
   "push": {
     "name": "{{user `atlas_username`}}/{{user `name`}}",
