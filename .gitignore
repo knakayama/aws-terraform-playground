@@ -1,0 +1,12 @@
+.terraform
+*tfstate*
+crash.log
+dist
+*.zip
+logs
+*.srl
+*.crt
+*.csr
+*.key
+*.pub
+*.pem
