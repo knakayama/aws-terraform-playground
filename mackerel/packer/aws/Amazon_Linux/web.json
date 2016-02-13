@@ -2,6 +2,7 @@
   "variables": {
     "aws_access_key":     "{{env `AWS_ACCESS_KEY_ID`}}",
     "aws_secret_key":     "{{env `AWS_SECRET_ACCESS_KEY`}}",
+    "aws_region":         "{{env `AWS_DEFAULT_REGION`}}",
     "atlas_username":     "{{env `ATLAS_USERNAME`}}",
     "ap_northeast_1_ami": "ami-383c1956",
     "name":               "aws-terraform-playground-mackerel",
@@ -25,7 +26,7 @@
       "type":            "amazon-ebs",
       "access_key":      "{{user `aws_access_key`}}",
       "secret_key":      "{{user `aws_secret_key`}}",
-      "region":          "ap-northeast-1",
+      "region":          "{{user `aws_region`}}",
       "vpc_id":          "vpc-459af120",
       "subnet_id":       "subnet-2fa0cd76",
       "source_ami":      "{{user `ap_northeast_1_ami`}}",
@@ -50,7 +51,7 @@
     },
     {
       "type": "file",
-      "source": "../../{{user `scripts_dir`}}/.",
+      "source": "{{user `scripts_dir`}}/.",
       "destination": "/ops/{{user `scripts_dir`}}"
     },
     {
@@ -63,8 +64,8 @@
     },
     {
       "type": "ansible-local",
-      "playbook_file": "../../{{user `scripts_dir`}}/web/site.yml",
-      "inventory_file": "../../{{user `scripts_dir`}}/web/hosts",
+      "playbook_file": "{{user `scripts_dir`}}/web/site.yml",
+      "inventory_file": "{{user `scripts_dir`}}/web/hosts",
       "staging_directory": "/ops/{{user `scripts_dir`}}/web",
       "extra_arguments": [
         "--extra-vars 'mackerel_api_key={{user `mackerel_api_key`}}'"
