@@ -13,7 +13,7 @@
     "mackerel_api_key":    "{{env `MACKEREL_API_KEY`}}"
   },
   "push": {
-    "name": "{{user `atlas_username`}}/{{user `ap_northeast_1_name`}}",
+    "name": "{{user `atlas_username`}}/{{user `name`}}",
     "base_dir": "../../.",
     "include": [
       "{{user `scripts_dir`}}/*",

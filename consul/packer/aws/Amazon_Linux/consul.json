@@ -11,7 +11,7 @@
     "dns_listen_addr":    "127.0.0.1"
   },
   "push": {
-    "name": "{{user `atlas_username`}}/{{user `ap_norteast_1_name`}}",
+    "name": "{{user `atlas_username`}}/{{user `name`}}",
     "base_dir": "../../.",
     "include": [
       "{{user `scripts_dir`}}/*",
@@ -52,7 +52,7 @@
     },
     {
       "type": "file",
-      "source": "../../{{user `scripts_dir`}}/.",
+      "source": "{{user `scripts_dir`}}/.",
       "destination": "/ops/{{user `scripts_dir`}}"
     },
     {

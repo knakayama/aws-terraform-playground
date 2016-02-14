@@ -1,10 +1,16 @@
-variable "name"       { }
-variable "region"     { }
-variable "iam_admins" { }
-variable "policy"     { }
+variable "name"              { }
+variable "region"            { }
+variable "iam_admins"        { }
+variable "policy"            { }
+variable "atlas_username"    { }
+variable "atlas_environment" { }
 
 provider "aws" {
   region = "${var.region}"
+}
+
+atlas {
+  name = "${var.atlas_username}/${var.atlas_environment}"
 }
 
 module "iam_admin" {
