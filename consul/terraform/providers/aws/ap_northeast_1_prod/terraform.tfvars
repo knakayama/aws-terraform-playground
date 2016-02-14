@@ -1,8 +1,12 @@
 # General
-name             = "aws-consul-demo"
-region           = "ap-northeast-1"
-site_public_key  = "keys/aws.pem.pub"
-key_path         = "keys/aws.pem"
+name              = "aws-consul-demo"
+region            = "ap-northeast-1"
+atlas_environment = "REPLACE_IN_ATLAS"
+atlas_aws_global  = "REPLACE_IN_ATLAS"
+atlas_token       = "REPLACE_IN_ATLAS"
+atlas_username    = "REPLACE_IN_ATLAS"
+site_public_key   = "REPLACE_IN_ATLAS"
+site_private_key  = "REPLACE_IN_ATLAS"
 
 # Network
 vpc_cidrs      = "172.16.0.0/16,172.17.0.0/16"

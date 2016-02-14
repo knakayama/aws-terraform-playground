@@ -16,6 +16,8 @@ module "web" {
   public_subnet_id = "${var.public_subnet_id}"
   instance_type    = "${var.web_instance_type}"
   instance_ami_id  = "${var.web_instance_ami_id}"
+  atlas_aws_global = "${var.atlas_aws_global}"
+  atlas_username   = "${var.atlas_username}"
 }
 
 output "web_public_ip" { value = "${module.web.public_ip}" }

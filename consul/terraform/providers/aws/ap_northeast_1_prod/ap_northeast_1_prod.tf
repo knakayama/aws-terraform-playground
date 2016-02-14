@@ -1,8 +1,12 @@
-variable "name"            { }
-variable "region"          { }
-variable "account_id"      { }
-variable "site_public_key" { }
-variable "key_path"        { }
+variable "name"              { }
+variable "region"            { }
+variable "account_id"        { }
+variable "site_public_key"   { }
+variable "site_private_key"  { }
+variable "atlas_environment" { }
+variable "atlas_username"    { }
+variable "atlas_aws_global"  { }
+variable "atlas_token"       { }
 
 variable "web_instance_type"   { }
 variable "web_instance_ami_id" { }
@@ -17,6 +21,10 @@ variable "sub_domains" { }
 
 provider "aws" {
   region = "${var.region}"
+}
+
+atlas {
+  name = "${var.atlas_username}/${var.atlas_environment}"
 }
 
 resource "aws_key_pair" "site_key" {

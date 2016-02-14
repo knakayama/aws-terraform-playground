@@ -1,6 +1,10 @@
-variable "name"            { }
-variable "region"          { }
-variable "site_public_key" { }
+variable "name"              { }
+variable "region"            { }
+variable "site_public_key"   { }
+variable "atlas_token"       { }
+variable "atlas_username"    { }
+variable "atlas_aws_global"  { }
+variable "atlas_environment" { }
 
 variable "vpc_cidr"      { }
 variable "az"            { }
@@ -16,9 +20,23 @@ provider "aws" {
   region = "${var.region}"
 }
 
+atlas {
+  name = "${var.atlas_username}/${var.atlas_environment}"
+}
+
 resource "aws_key_pair" "site_key" {
   key_name   = "${var.name}"
-  public_key = "${file(concat(path.module, "/", var.site_public_key))}"
+  public_key = "${var.site_public_key}"
+}
+
+resource "terraform_remote_state" "aws_global" {
+  backend = "atlas"
+
+  config {
+    name = "${var.atlas_username}/${var.atlas_aws_global}"
+  }
+
+  lifecycle { create_before_destroy = true }
 }
 
 module "network" {
