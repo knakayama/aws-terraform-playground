@@ -1,0 +1,31 @@
+---
+- name: Install packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "{{ packages }}"
+
+- name: Install consul
+  unarchive:
+    src: "{{ consul_url }}"
+    dest: /usr/local/bin
+    copy: no
+
+- name: Create consul config dir
+  file:
+    dest: /etc/consul.d
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+
+- name: Copy consul configs
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - "{{ consul_configs }}"

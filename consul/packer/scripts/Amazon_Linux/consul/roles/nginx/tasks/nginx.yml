@@ -1,0 +1,11 @@
+---
+- name: Install httpd
+  yum:
+    name: nginx
+    state: present
+
+- name: Be sure nginx enabled and started
+  service:
+    name: nginx
+    enabled: yes
+    state: started

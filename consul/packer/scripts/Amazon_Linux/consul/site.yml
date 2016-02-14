@@ -1,0 +1,6 @@
+---
+- name: Setup consul
+  hosts: localhost
+  roles:
+    - { role: nginx,  tags: [ nginx ] }
+    - { role: consul, tags: [ consul ] }

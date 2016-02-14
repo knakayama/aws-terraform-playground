@@ -1,0 +1,11 @@
+---
+consul_ver: 0.6.3
+consul_url: "https://releases.hashicorp.com/consul/{{ consul_ver }}/consul_{{ consul_ver }}_linux_amd64.zip"
+
+packages:
+  - unzip
+  - curl
+
+consul_configs:
+  - { src: etc/consul.d/ping.json, dest: /etc/consul.d/ping.json }
+  - { src: etc/consul.d/web.json, dest: /etc/consul.d/web.json }

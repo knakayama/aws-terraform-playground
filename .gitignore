@@ -3,3 +3,4 @@
 .terraform
 certs
 terraform.out
+terraform.plan
