@@ -43,7 +43,7 @@
     },
     {
       "type": "file",
-      "source": "../../{{user `scripts_dir`}}/.",
+      "source": "{{user `scripts_dir`}}/.",
       "destination": "/ops/{{user `scripts_dir`}}"
     },
     {
@@ -56,8 +56,8 @@
     },
     {
       "type": "ansible-local",
-      "playbook_file": "../../{{user `scripts_dir`}}/ansible-web/site.yml",
-      "inventory_file": "../../{{user `scripts_dir`}}/ansible-web/hosts",
+      "playbook_file": "{{user `scripts_dir`}}/ansible-web/site.yml",
+      "inventory_file": "{{user `scripts_dir`}}/ansible-web/hosts",
       "staging_directory": "/ops/{{user `scripts_dir`}}/ansible-web"
     }
   ]

@@ -41,7 +41,7 @@
     },
     {
       "type": "file",
-      "source": "../../{{user `scripts_dir`}}/.",
+      "source": "{{user `scripts_dir`}}/.",
       "destination": "/ops/{{user `scripts_dir`}}"
     },
     {
