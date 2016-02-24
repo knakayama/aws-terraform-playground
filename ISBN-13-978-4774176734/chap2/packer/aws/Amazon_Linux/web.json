@@ -7,7 +7,9 @@
     "ap_norteast_1_name": "chap2-aws-ap-northeast-1-linux-web",
     "ssh_username":       "ec2-user",
     "scripts_dir":        "scripts/Amazon_Linux",
-    "dns_listen_addr":    "127.0.0.1"
+    "dns_listen_addr":    "127.0.0.1",
+    "vpc_id":             "{{env `AWS_VPC_ID`}}",
+    "subnet_id":          "{{env `AWS_SUBNET_ID`}}"
   },
   "builders": [
     {
@@ -16,8 +18,8 @@
       "access_key":      "{{user `aws_access_key`}}",
       "secret_key":      "{{user `aws_secret_key`}}",
       "region":          "ap-northeast-1",
-      "vpc_id":          "vpc-2029b645",
-      "subnet_id":       "subnet-04720f73",
+      "vpc_id":          "{{user `vpc_id`}}",
+      "subnet_id":       "{{user `subnet_id`}}",
       "source_ami":      "{{user `ap_northeast_1_ami`}}",
       "instance_type":   "t2.micro",
       "ssh_username":    "{{user `ssh_username`}}",

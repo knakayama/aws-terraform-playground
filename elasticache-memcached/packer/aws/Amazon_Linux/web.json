@@ -8,8 +8,8 @@
     "ssh_username":       "ec2-user",
     "scripts_dir":        "scripts/Amazon_Linux",
     "dns_listen_addr":    "127.0.0.1",
-    "vpc_id":             "vpc_id",
-    "subnet_id":          "subnet_id"
+    "vpc_id":             "{{env `AWS_VPC_ID`}}",
+    "subnet_id":          "{{env `AWS_VPC_ID`}}"
   },
   "builders": [
     {

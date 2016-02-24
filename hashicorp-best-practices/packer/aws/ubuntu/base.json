@@ -9,7 +9,9 @@
     "ssh_username":        "ubuntu",
     "scripts_dir":         "scripts/ubuntu",
     "config_dir":          "config",
-    "dns_listen_addr":     "127.0.0.1"
+    "dns_listen_addr":     "127.0.0.1",
+    "vpc_id":              "{{env `AWS_VPC_ID`}}",
+    "subnet_id":           "{{env `AWS_SUBNET_ID`}}"
   },
   "push": {
     "name": "{{user `atlas_username`}}/{{user `name`}}",
@@ -34,8 +36,8 @@
       "access_key":      "{{user `aws_access_key`}}",
       "secret_key":      "{{user `aws_secret_key`}}",
       "region":          "ap-northeast-1",
-      "vpc_id":          "vpc-459af120",
-      "subnet_id":       "subnet-2fa0cd76",
+      "vpc_id":          "{{user `vpc_id`}}",
+      "subnet_id":       "{{user `subnet_id`}}",
       "source_ami":      "{{user `ap_northeast_1_ami`}}",
       "instance_type":   "t2.micro",
       "ssh_username":    "{{user `ssh_username`}}",
