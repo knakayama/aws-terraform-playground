@@ -10,6 +10,9 @@ variable "bastion_artifact_type"    { }
 variable "bastion_artifact_name"    { }
 variable "bastion_artifact_version" { }
 
+variable "ec2_instance_type"   { }
+variable "ec2_instance_ami_id" { }
+
 variable "vpc_cidr"       { }
 variable "public_subnet"  { }
 variable "private_subnet" { }
