@@ -1,0 +1,5 @@
+---
+- name: Setup vimrc
+  copy:
+    src: home/ec2-user/.vimrc
+    dest: ~/.vimrc

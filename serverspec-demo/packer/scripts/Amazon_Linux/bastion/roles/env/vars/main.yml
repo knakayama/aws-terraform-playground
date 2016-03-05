@@ -1,0 +1,12 @@
+---
+packages:
+  - git
+  - gcc
+  - zsh
+  - openssl-devel
+  - readline-devel
+  - zlib-devel
+
+rbenv_repositories:
+  - { repo: "https://github.com/rbenv/rbenv.git", dest: "~/.rbenv" }
+  - { repo: "https://github.com/rbenv/ruby-build.git", dest: "~/.rbenv/plugins/ruby-build" }

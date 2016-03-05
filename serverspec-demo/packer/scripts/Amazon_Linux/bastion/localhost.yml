@@ -1,0 +1,5 @@
+---
+- name: Set up bastion
+  hosts: localhost
+  roles:
+    - { role: env, tags: [ env ] }

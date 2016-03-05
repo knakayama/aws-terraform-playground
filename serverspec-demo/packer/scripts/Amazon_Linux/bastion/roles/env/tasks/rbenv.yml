@@ -1,0 +1,32 @@
+---
+- name: Clone rbenv and rbenv-build
+  git:
+    repo: "{{ item.repo }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - "{{ rbenv_repositories }}"
+
+- name: Compile rbenv
+  shell: |
+    src/configure && make -C src
+  args:
+    chdir: ~/.rbenv
+    creates: ~/.rbenv/src/realpath.c
+
+- name: Modify .bash_profile
+  lineinfile:
+    line: "{{ item }}"
+    dest: ~/.bash_profile
+  with_items:
+    - 'export PATH="$HOME/.rbenv/bin:$PATH"'
+    - 'eval "$(rbenv init -)"'
+
+- name: Install ruby "{{ ruby_version }}"
+  shell: |
+    /bin/bash -lc 'rbenv install "{{ ruby_version }}"'
+  args:
+    creates: "~/.rbenv/versions/{{ ruby_version }}/bin/ruby"
+
+- name: Change ruby version to "{{ ruby_version }}"
+  shell: |
+    /bin/bash -lc 'rbenv global "{{ ruby_version }}"'
