@@ -15,7 +15,7 @@ private_subnet = "172.16.1.0/24"
 
 # Bastion
 bastion_artifact_type    = "amazon.ami"
-bastion_artifact_name    = "ap-northeast-1-serverspec-demo"
+bastion_artifact_name    = "serverspec-demo"
 bastion_artifact_version = "latest"
 
 # EC2
