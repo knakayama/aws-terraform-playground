@@ -5,8 +5,8 @@
     "aws_region":          "{{env `AWS_DEFAULT_REGION`}}",
     "atlas_username":      "{{env `ATLAS_USERNAME`}}",
     "ap_northeast_1_ami":  "ami-383c1956",
-    "name":                "aws-serverspec-demo",
-    "ap_northeast_1_name": "aws-ap-northeast-1-serverspec-demo",
+    "name":                "serverspec-demo",
+    "ap_northeast_1_name": "ap-northeast-1-serverspec-demo",
     "ssh_username":        "ec2-user",
     "scripts_dir":         "scripts/Amazon_Linux",
     "dns_listen_addr":     "127.0.0.1",
@@ -47,6 +47,7 @@
       "run_tags":        { "ami-create": "{{user `ap_northeast_1_name`}}" },
       "tags":            { "ami": "{{user `ap_northeast_1_name`}}" },
       "ssh_private_ip":  false,
+      "ssh_pty":         true,
       "associate_public_ip_address": true
     }
   ],
