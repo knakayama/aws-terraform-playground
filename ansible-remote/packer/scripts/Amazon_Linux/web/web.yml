@@ -1,0 +1,6 @@
+---
+- name: Set up web
+  hosts: web
+  roles:
+    - { role: common, tags: [ common ] }
+    - { role: nginx,  tags: [ nginx ] }
