@@ -3,7 +3,6 @@ variable "region"            { }
 variable "site_public_key"   { }
 variable "atlas_environment" { }
 variable "atlas_username"    { }
-variable "atlas_aws_global"  { }
 variable "atlas_token"       { }
 
 variable "bastion_artifact_type"    { }
@@ -38,7 +37,7 @@ resource "terraform_remote_state" "aws_global" {
   backend = "atlas"
 
   config {
-    name = "${var.atlas_username}/${var.atlas_aws_global}"
+    name = "${var.atlas_username}/${var.atlas_environment}"
   }
 
   lifecycle { create_before_destroy = true }
@@ -75,7 +74,7 @@ module "compute" {
   private_subnet_id       = "${module.network.private_subnet_id}"
   ec2_instance_type       = "${var.ec2_instance_type}"
   ec2_instance_ami_id     = "${var.ec2_instance_ami_id}"
-  bastion_artifact_ami_id = "${module.artifact_bastion.ami_id}"
+  bastion_artifact_ami_id = "${module.artifact_bastion.id}"
 }
 
 module "dns" {

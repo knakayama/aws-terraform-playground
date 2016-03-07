@@ -13,4 +13,4 @@ resource "atlas_artifact" "artifact" {
   metadata  { region = "${var.region}" }
 }
 
-output "ami_id" { value = "${atlas_artifact.artifact.metadata_full.ami_id}" }
+output "id" { value = "${atlas_artifact.artifact.metadata_full.region-ap-northeast-1}" }
