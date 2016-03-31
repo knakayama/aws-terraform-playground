@@ -1,0 +1,75 @@
+{
+  "variables": {
+    "aws_access_key":      "{{env `AWS_ACCESS_KEY_ID`}}",
+    "aws_secret_key":      "{{env `AWS_SECRET_ACCESS_KEY`}}",
+    "aws_region":          "{{env `AWS_DEFAULT_REGION`}}",
+    "atlas_username":      "{{env `ATLAS_USERNAME`}}",
+    "ap_northeast_1_ami":  "ami-f80e0596",
+    "name":                "ansible-remote",
+    "ap_northeast_1_name": "ap-northeast-1-ansible-remote",
+    "ssh_username":        "ec2-user",
+    "scripts_dir":         "scripts/Amazon_Linux",
+    "dns_listen_addr":     "127.0.0.1",
+    "vpc_id":              "{{env `AWS_VPC_ID`}}",
+    "subnet_id":           "{{env `AWS_SUBNET_ID`}}"
+  },
+  "push": {
+    "name": "{{user `atlas_username`}}/{{user `name`}}",
+    "base_dir": "../../.",
+    "include": [
+      "{{user `scripts_dir`}}/*",
+      "{{user `scripts_dir`}}/web/*",
+      "{{user `scripts_dir`}}/web/roles/*",
+      "{{user `scripts_dir`}}/web/roles/nginx/*",
+      "{{user `scripts_dir`}}/web/roles/nginx/tasks/*",
+      "{{user `scripts_dir`}}/web/roles/common/*",
+      "{{user `scripts_dir`}}/web/roles/common/tasks/*"
+    ],
+    "vcs": false
+  },
+  "builders": [
+    {
+      "name":            "{{user `ap_northeast_1_name`}}",
+      "type":            "amazon-ebs",
+      "access_key":      "{{user `aws_access_key`}}",
+      "secret_key":      "{{user `aws_secret_key`}}",
+      "region":          "{{user `aws_region`}}",
+      "vpc_id":          "{{user `vpc_id`}}",
+      "subnet_id":       "{{user `subnet_id`}}",
+      "source_ami":      "{{user `ap_northeast_1_ami`}}",
+      "instance_type":   "t2.micro",
+      "ssh_username":    "{{user `ssh_username`}}",
+      "ssh_timeout":     "10m",
+      "ami_name":        "{{user `ap_northeast_1_name`}} {{timestamp}}",
+      "ami_description": "{{user `ap_northeast_1_name`}} AMI",
+      "run_tags":        { "ami-create": "{{user `ap_northeast_1_name`}}" },
+      "tags":            { "ami": "{{user `ap_northeast_1_name`}}" },
+      "ssh_private_ip":  false,
+      "associate_public_ip_address": true
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "ansible",
+      "playbook_file": "{{user `scripts_dir`}}/web/site.yml",
+      "host_alias": "web",
+      "extra_arguments": "-vvvv",
+      "ssh_host_key_file": "{{user `scripts_dir`}}/web/keys/site_key",
+      "ssh_authorized_key_file": "{{user `scripts_dir`}}/web/keys/site_key.pub",
+      "ansible_env_vars": [
+        "ANSIBLE_CONTROL_PATH=%(directory)s/%%h-%%r",
+        "ANSIBLE_CONFIG={{user `scripts_dir`}}/web/ansible.cfg"
+      ]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "atlas",
+      "artifact": "{{user `atlas_username`}}/{{user `ap_northeast_1_name`}}",
+      "artifact_type": "amazon.image",
+      "metadata": {
+        "created_at": "{{timestamp}}"
+      }
+    }
+  ]
+}

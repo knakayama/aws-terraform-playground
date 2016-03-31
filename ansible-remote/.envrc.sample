@@ -1,0 +1,7 @@
+export AWS_ACCESS_KEY_ID=""
+export AWS_SECRET_ACCESS_KEY=""
+export AWS_DEFAULT_REGION=""
+export ATLAS_USERNAME=""
+export ATLAS_TOKEN=""
+export AWS_VPC_ID=""
+export AWS_SUBNET_ID=""
