@@ -1,0 +1,57 @@
+variable "region" {
+  default = "ap-northeast-1"
+}
+
+provider "aws" {
+  region = "${var.region}"
+}
+
+resource "aws_dynamodb_table" "dynamodb" {
+  name           = "GameScores"
+  read_capacity  = 20
+  write_capacity = 20
+  hash_key       = "UserId"
+  range_key      = "GameTitle"
+
+  attribute {
+    name = "UserId"
+    type = "S"
+  }
+
+  attribute {
+    name = "GameTitle"
+    type = "S"
+  }
+
+  attribute {
+    name = "TopScore"
+    type = "N"
+  }
+
+  global_secondary_index {
+    name               = "GameTitleIndex"
+    hash_key           = "GameTitle"
+    range_key          = "TopScore"
+    write_capacity     = 10
+    read_capacity      = 10
+    projection_type    = "INCLUDE"
+    non_key_attributes = ["UserId"]
+  }
+}
+
+output "dynamodb_arn" {
+  value = "${aws_dynamodb_table.dynamodb.arn}"
+}
+
+output "dynamodb_id" {
+  value = "${aws_dynamodb_table.dynamodb.id}"
+}
+
+#output "dynamodb_stream_arn" {
+
+
+#  value = "${aws_dynamodb_table.dynamodb.stream_arn}"
+
+
+#}
+
