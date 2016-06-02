@@ -1,0 +1,24 @@
+version: 0.0
+os: linux
+files:
+  - source: files/etc/nginx/conf.d/wordpress.conf
+    destination: /etc/nginx/conf.d
+  - source: files/etc/php.ini
+    destination: /etc
+hooks:
+  ApplicationStop:
+    - location: scripts/stop_server.sh
+      timeout: 300
+      runas: root
+  BeforeInstall:
+    - location: scripts/install_dependencies.sh
+      timeout: 300
+      runas: root
+  AfterInstall:
+    - location: scripts/change_permissions.sh
+      timeout: 300
+      runas: root
+  ApplicationStart:
+    - location: scripts/start_server.sh
+      timeout: 300
+      runas: root
