@@ -1,0 +1,11 @@
+#cloud-config
+repo_update: true
+repo_upgrade: all
+timezone: "Asia/Tokyo"
+
+runcmd:
+  - pip install ansible
+  - aws s3 sync s3://codedeploy-simple/ansible ansible
+  - cd ansible && /usr/local/bin/ansible-playbook site.yml
+  - wget https://aws-codedeploy-ap-northeast-1.s3.amazonaws.com/latest/install
+  - ruby ./install auto

@@ -1,0 +1,13 @@
+---
+- name: Install php packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "{{ php_packages }}"
+
+- name: Be sure php-fpm enabled and started
+  service:
+    name: php-fpm
+    enabled: yes
+    state: started

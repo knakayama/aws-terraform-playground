@@ -1,0 +1,8 @@
+---
+- name: Test codedeploy
+  hosts: localhost
+  connection: local
+  roles:
+    - { role: nginx, tags: [ nginx ] }
+    - { role: php,   tags: [ php ] }
+    - { role: mysql, tags: [ mysql ] }
