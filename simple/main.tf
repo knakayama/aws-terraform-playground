@@ -140,8 +140,14 @@ resource "aws_instance" "web" {
 #cloud-config
 repo_update: true
 repo_upgrade: all
-timezone: "Asia/Tokyo"
+
+runcmd:
+  - cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 EOT
+
+  tags {
+    Name = "simple"
+  }
 }
 
 output "web_public_ip" {
