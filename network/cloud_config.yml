@@ -1,0 +1,8 @@
+repo_update: true
+repo_upgrade: all
+
+packages:
+  - mysql
+
+runcmd:
+  - cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
