@@ -1,11 +1,3 @@
-variable "region" {
-  default = "ap-northeast-1"
-}
-
-provider "aws" {
-  region = "${var.region}"
-}
-
 resource "aws_dynamodb_table" "dynamodb" {
   name           = "GameScores"
   read_capacity  = 20
@@ -38,20 +30,3 @@ resource "aws_dynamodb_table" "dynamodb" {
     non_key_attributes = ["UserId"]
   }
 }
-
-output "dynamodb_arn" {
-  value = "${aws_dynamodb_table.dynamodb.arn}"
-}
-
-output "dynamodb_id" {
-  value = "${aws_dynamodb_table.dynamodb.id}"
-}
-
-#output "dynamodb_stream_arn" {
-
-
-#  value = "${aws_dynamodb_table.dynamodb.stream_arn}"
-
-
-#}
-
