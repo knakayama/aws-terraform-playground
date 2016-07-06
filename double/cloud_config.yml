@@ -2,5 +2,10 @@
 repo_update: true
 repo_upgrade: all
 
+packages:
+  - nginx
+
 runcmd:
   - cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+  - service nginx start
+  - chkconfig nginx on
