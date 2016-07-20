@@ -1,6 +1,6 @@
 resource "aws_key_pair" "site_key" {
   key_name   = "${var.name}"
-  public_key = "${file("site_key.pub")}"
+  public_key = "${file("keys/site_key.pub")}"
 }
 
 resource "aws_spot_instance_request" "web" {
