@@ -30,3 +30,21 @@ resource "aws_dynamodb_table" "dynamodb" {
     non_key_attributes = ["UserId"]
   }
 }
+
+resource "aws_dynamodb_table" "test" {
+  name           = "sending_histories"
+  read_capacity  = 1
+  write_capacity = 1
+  hash_key       = "frm"
+  range_key      = "lst"
+
+  attribute {
+    name = "frm"
+    type = "S"
+  }
+
+  attribute {
+    name = "lst"
+    type = "N"
+  }
+}
