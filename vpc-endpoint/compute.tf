@@ -1,11 +1,11 @@
 resource "aws_key_pair" "site_key" {
   key_name   = "${var.name}"
-  public_key = "${file("site_key.pub")}"
+  public_key = "${file("${path.module}/keys/site_key.pub")}"
 }
 
 resource "aws_iam_role" "ec2" {
   name               = "${var.name}-role"
-  assume_role_policy = "${file("assume_role_policy.json")}"
+  assume_role_policy = "${file("${path.module}/policies/assume_role_policy.json")}"
 }
 
 resource "aws_iam_instance_profile" "ec2" {
@@ -26,7 +26,7 @@ resource "aws_instance" "public" {
   subnet_id              = "${aws_subnet.public.id}"
   iam_instance_profile   = "${aws_iam_instance_profile.ec2.id}"
   key_name               = "${aws_key_pair.site_key.key_name}"
-  user_data              = "${file("cloud_config.yml")}"
+  user_data              = "${file("${path.module}/user_data/cloud_config.yml")}"
 
   root_block_device {
     volume_type = "gp2"
@@ -34,7 +34,7 @@ resource "aws_instance" "public" {
   }
 
   tags {
-    Name = "${var.name}"
+    Name = "${var.name}-public"
   }
 }
 
@@ -45,7 +45,7 @@ resource "aws_instance" "private" {
   subnet_id              = "${aws_subnet.private.id}"
   iam_instance_profile   = "${aws_iam_instance_profile.ec2.id}"
   key_name               = "${aws_key_pair.site_key.key_name}"
-  user_data              = "${file("cloud_config.yml")}"
+  user_data              = "${file("${path.module}/user_data/cloud_config.yml")}"
 
   root_block_device {
     volume_type = "gp2"
@@ -53,6 +53,6 @@ resource "aws_instance" "private" {
   }
 
   tags {
-    Name = "${var.name}"
+    Name = "${var.name}-private"
   }
 }

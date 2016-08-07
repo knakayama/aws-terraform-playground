@@ -62,6 +62,7 @@ resource "aws_vpc_endpoint" "vpc" {
   vpc_id          = "${aws_vpc.vpc.id}"
   service_name    = "com.amazonaws.ap-northeast-1.s3"
   route_table_ids = ["${aws_route_table.private.id}"]
+  policy          = "${file("${path.module}/policies/vpc_endpoint_policy.json")}"
 }
 
 resource "aws_network_acl" "acl" {
