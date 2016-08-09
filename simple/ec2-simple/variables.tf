@@ -10,20 +10,13 @@ variable "vpc_cidr" {
   default = "172.16.0.0/16"
 }
 
-variable "web_instance_type" {
-  default = "c3.large"
-}
-
-variable "spot_price" {
-  default = "0.1"
-}
-
-variable "wait_for_fulfillment" {
-  default = true
-}
-
-variable "spot_type" {
-  default = "one-time"
+variable "spot_config" {
+  default = {
+    instance_type        = "c3.large"
+    price                = "0.15"
+    wait_for_fulfillment = true
+    type                 = "one-time"
+  }
 }
 
 data "aws_availability_zones" "az" {}
