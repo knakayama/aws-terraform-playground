@@ -1,0 +1,13 @@
+#cloud-config
+repo_update: true
+repo_upgrade: all
+
+packages:
+  - mysql
+  - nginx
+
+runcmd:
+  - cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+  - service nginx start
+  - chkconfig nginx on
+  - at 'now + 5 min' -f /usr/local/bin/check-elb.sh
