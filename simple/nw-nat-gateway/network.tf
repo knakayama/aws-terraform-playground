@@ -20,7 +20,7 @@ resource "aws_subnet" "frontend_subnet" {
   count                   = 2
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "${cidrsubnet(var.vpc_cidr, 8, count.index+1)}"
-  availability_zone       = "${azs[count.index]}"
+  availability_zone       = "${var.azs[count.index]}"
   map_public_ip_on_launch = false
 
   tags {
@@ -61,7 +61,7 @@ resource "aws_subnet" "application_subnet" {
   count                   = 2
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "${cidrsubnet(var.vpc_cidr, 8, count.index+101)}"
-  availability_zone       = "${azs[count.index]}"
+  availability_zone       = "${var.azs[count.index]}"
   map_public_ip_on_launch = false
 
   tags {
@@ -92,7 +92,7 @@ resource "aws_subnet" "datastore_subnet" {
   count                   = 2
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "${cidrsubnet(var.vpc_cidr, 8, count.index+201)}"
-  availability_zone       = "${azs[count.index]}"
+  availability_zone       = "${var.azs[count.index]}"
   map_public_ip_on_launch = false
 
   tags {
