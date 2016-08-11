@@ -1,5 +1,5 @@
 variable "name" {
-  default = "prd"
+  default = "prj"
 }
 
 variable "region" {
