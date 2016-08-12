@@ -1,18 +1,19 @@
-resource "aws_key_pair" "site_key" {
+resource "aws_key_pair" "key_pair" {
   key_name   = "${var.name}"
-  public_key = "${file("keys/site_key.pub")}"
+  public_key = "${file("${path.module}/keys/key_pair.pub")}"
 }
 
 resource "aws_spot_instance_request" "web" {
-  spot_price                  = "${var.spot_price}"
-  spot_type                   = "${var.spot_type}"
-  wait_for_fulfillment        = "${var.wait_for_fulfillment}"
+  count                       = 2
+  spot_price                  = "${var.spot_config["price"]}"
+  spot_type                   = "${var.spot_config["type"]}"
+  wait_for_fulfillment        = "${var.spot_config["wait_for_fulfillment"]}"
   ami                         = "${data.aws_ami.amazon_linux.id}"
-  instance_type               = "${var.web_instance_type}"
-  key_name                    = "${aws_key_pair.site_key.key_name}"
+  instance_type               = "${var.spot_config["instance_type"]}"
+  key_name                    = "${aws_key_pair.key_pair.key_name}"
   vpc_security_group_ids      = ["${aws_security_group.web.id}"]
-  subnet_id                   = "${aws_subnet.public.id}"
-  user_data                   = "${file("cloud_config.yml")}"
+  subnet_id                   = "${element(aws_subnet.application_subnet.*.id, count.index)}"
+  user_data                   = "${file("${path.module}/user_data/ec2_cloud_config.yml")}"
   associate_public_ip_address = true
 
   #block_duration_minutes      = 60

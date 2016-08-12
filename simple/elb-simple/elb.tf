@@ -1,7 +1,7 @@
 resource "aws_elb" "elb" {
   name                        = "${var.name}-elb"
-  subnets                     = ["${aws_subnet.public.id}"]
-  instances                   = ["${aws_spot_instance_request.web.spot_instance_id}"]
+  subnets                     = ["${aws_subnet.frontend_subnet.*.id}"]
+  instances                   = ["${aws_spot_instance_request.web.*.spot_instance_id}"]
   idle_timeout                = 60
   security_groups             = ["${aws_security_group.elb.id}"]
   connection_draining         = true
