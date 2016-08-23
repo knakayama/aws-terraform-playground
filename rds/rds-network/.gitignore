@@ -1,2 +1,4 @@
 site_key*
 *tfstate*
+keys/*
+!keys/.gitkeep

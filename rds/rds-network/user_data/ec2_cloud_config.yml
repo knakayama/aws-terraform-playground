@@ -7,3 +7,4 @@ packages:
 
 runcmd:
   - cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+  - yum install redis --enablerepo=epel
