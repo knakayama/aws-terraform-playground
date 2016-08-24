@@ -25,3 +25,7 @@ output "es_domain_id" {
 output "es_endpoint" {
   value = "${aws_elasticsearch_domain.es.endpoint}"
 }
+
+output "s3_bucket" {
+  value = "${aws_s3_bucket.s3.id}"
+}

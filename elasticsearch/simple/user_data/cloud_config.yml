@@ -2,5 +2,13 @@
 repo_update: true
 repo_upgrade: all
 
+packages:
+  - nginx
+
 runcmd:
   - cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+  - curl -L http://toolbelt.treasuredata.com/sh/install-redhat-td-agent2.sh | sh
+  - /opt/td-agent/embedded/bin/fluent-gem install fluent-plugin-s3
+  - /opt/td-agent/embedded/bin/fluent-gem install fluent-plugin-elasticsearch
+  - chkconfig nginx on
+  - service nginx start
