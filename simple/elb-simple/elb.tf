@@ -22,4 +22,10 @@ resource "aws_elb" "elb" {
     healthy_threshold   = 10
     unhealthy_threshold = 2
   }
+
+  access_logs {
+    bucket        = "${aws_s3_bucket.elb_log.bucket}"
+    bucket_prefix = "demo"
+    interval      = 60
+  }
 }
