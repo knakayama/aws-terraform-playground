@@ -1,6 +1,6 @@
-resource "aws_key_pair" "site_key" {
+resource "aws_key_pair" "key_pair" {
   key_name   = "${var.name}"
-  public_key = "${file("site_key.pub")}"
+  public_key = "${file("${path.module}/keys/key_pair.pub")}"
 }
 
 resource "aws_instance" "web" {
@@ -9,8 +9,8 @@ resource "aws_instance" "web" {
   instance_type               = "${var.web_instance_type}"
   vpc_security_group_ids      = ["${element(aws_security_group.web.*.id, count.index)}"]
   subnet_id                   = "${element(aws_subnet.public.*.id, count.index)}"
-  key_name                    = "${aws_key_pair.site_key.key_name}"
-  user_data                   = "${file("cloud_config.yml")}"
+  key_name                    = "${aws_key_pair.key_pair.key_name}"
+  user_data                   = "${file("${path.module}/user_data/ec2_cloud_config.yml")}"
   associate_public_ip_address = true
 
   root_block_device {
