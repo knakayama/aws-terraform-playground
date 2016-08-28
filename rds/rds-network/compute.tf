@@ -4,7 +4,7 @@ resource "aws_key_pair" "site_key" {
 }
 
 resource "aws_instance" "web" {
-  ami                         = "${data.aws_ami.amazon_linux.id}"
+  ami                         = "${var.amazon_linux_id}"
   instance_type               = "${var.web_instance_type}"
   vpc_security_group_ids      = ["${aws_security_group.web.id}"]
   subnet_id                   = "${element(aws_subnet.public.*.id, 1)}"

@@ -4,6 +4,7 @@ repo_upgrade: all
 
 packages:
   - mysql
+  - postgresql94
 
 runcmd:
   - cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime

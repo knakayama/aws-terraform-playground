@@ -1,7 +1,3 @@
-provider "aws" {
-  region = "${var.region}"
-}
-
 resource "aws_vpc" "vpc" {
   cidr_block           = "${var.vpc_cidr}"
   enable_dns_support   = true
@@ -15,8 +11,8 @@ resource "aws_internet_gateway" "public" {
 resource "aws_subnet" "public" {
   count                   = 2
   vpc_id                  = "${aws_vpc.vpc.id}"
-  cidr_block              = "${cidrsubnet(var.vpc_cidr, 8, count.index+1)}"
-  availability_zone       = "${data.aws_availability_zones.az.names[count.index]}"
+  cidr_block              = "${cidrsubnet(var.vpc_cidr, 8, count.index)}"
+  availability_zone       = "${var.azs[count.index]}"
   map_public_ip_on_launch = true
 }
 
@@ -38,8 +34,8 @@ resource "aws_route_table_association" "public" {
 resource "aws_subnet" "private" {
   count             = 2
   vpc_id            = "${aws_vpc.vpc.id}"
-  cidr_block        = "${cidrsubnet(var.vpc_cidr, 8, count.index+101)}"
-  availability_zone = "${data.aws_availability_zones.az.names[count.index]}"
+  cidr_block        = "${cidrsubnet(var.vpc_cidr, 8, count.index+100)}"
+  availability_zone = "${var.azs[count.index]}"
 }
 
 resource "aws_network_acl" "acl" {
