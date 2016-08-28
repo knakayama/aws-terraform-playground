@@ -1,0 +1,12 @@
+#cloud-config
+repo_update: true
+repo_upgrade: all
+
+packages:
+  - nginx
+
+runcmd:
+  - cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+  - service nginx start
+  - chkconfig nginx on
+  - curl -s http://169.254.169.254/latest/meta-data/public-hostname > /usr/share/nginx/html/index.html
