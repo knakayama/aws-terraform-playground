@@ -10,7 +10,7 @@ variable "vpc_cidr" {
   default = "172"
 }
 
-variable "web_instance_type" {
+variable "instance_type" {
   default = "t2.nano"
 }
 

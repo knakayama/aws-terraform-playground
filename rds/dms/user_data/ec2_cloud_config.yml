@@ -3,9 +3,13 @@ repo_update: true
 repo_upgrade: all
 
 packages:
-  - mysql
-  - postgresql94
+  - mysql-server
+  - postgresql94-server
 
 runcmd:
   - cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
-  - yum install redis --enablerepo=epel
+  - chkconfig mysqld on
+  - service mysqld start
+  - chkconfig postgresql94 on
+  - service postgresql94 initdb
+  - service postgresql94 start

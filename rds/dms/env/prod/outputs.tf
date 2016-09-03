@@ -1,7 +1,19 @@
-output "web_public_ips" {
-  value = "${module.main.web_public_ips}"
+output "public_ip_ec2_1" {
+  value = "${module.main.public_ip_ec2_1}"
 }
 
-output "web_private_ips" {
-  value = "${module.main.web_private_ips}"
+output "private_ip_ec2_1" {
+  value = "${module.main.private_ip_ec2_1}"
+}
+
+output "public_ip_ec2_2" {
+  value = "${module.main.public_ip_ec2_2}"
+}
+
+output "private_ip_ec2_2" {
+  value = "${module.main.private_ip_ec2_2}"
+}
+
+output "endpoint" {
+  value = "${module.main.endpoint}"
 }
