@@ -32,5 +32,8 @@ resource "aws_db_instance" "rds" {
   parameter_group_name       = "${aws_db_parameter_group.rds.id}"
   maintenance_window         = "Tue:04:00-Tue:04:30"
   publicly_accessible        = false
-  monitoring_role_arn        = "${aws_iam_role.role_for_rds.arn}"
+
+  #monitoring_role_arn        = "${aws_iam_role.role_for_rds.arn}"
+
+  #monitoring_interval        = 5
 }
