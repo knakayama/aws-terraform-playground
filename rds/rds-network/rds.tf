@@ -7,3 +7,8 @@ resource "aws_db_subnet_group" "rds" {
     Name = "${var.name}"
   }
 }
+
+resource "aws_db_parameter_group" "rds" {
+  name   = "${var.name}"
+  family = "postgres9.5"
+}
