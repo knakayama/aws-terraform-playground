@@ -5,3 +5,4 @@ certs
 terraform.out
 terraform.plan
 secret.tfvars
+secrets.tfvars
