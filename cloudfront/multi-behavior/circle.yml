@@ -1,0 +1,56 @@
+machine:
+  environment:
+    S3_BUCKET: terraform-circleci-demo
+    AWS_DEFAULT_REGION: ap-northeast-1
+    TERRAFORM_VER: 0.7.0
+
+dependencies:
+  override:
+    - |
+      if [[ ! -f ~/.local/bin/terraform ]]; then
+        mkdir -p ~/.local/bin
+        cd ~/.local/bin
+        wget "https://releases.hashicorp.com/terraform/${TERRAFORM_VER}/terraform_${TERRAFORM_VER}_linux_amd64.zip"
+        unzip *.zip
+        rm *.zip
+      fi
+  cache_directories:
+    - ~/.local/bin
+
+
+test:
+  override:
+    - |
+      if [[ "${CIRCLE_BRANCH}" =~ (release/)?dev/? ]]; then
+        make remote-enable ENV=dev
+        make terraform ENV=dev ARGS="get -update"
+        make terraform ENV=dev ARGS=plan
+      elif [[ "${CIRCLE_BRANCH}" =~ (release/)?stg/? ]]; then
+        make remote-enable ENV=stg
+        make terraform ENV=stg ARGS="get -update"
+        make terraform ENV=stg ARGS=plan
+      elif [[ "${CIRCLE_BRANCH}" =~ (release/)?prd/?|master ]]; then
+        make remote-enable ENV=prd
+        make terraform ENV=prd ARGS="get -update"
+        make terraform ENV=prd ARGS=plan
+      fi
+
+deployment:
+  development:
+    branch: release/dev
+    commands:
+      - make terraform ENV=dev ARGS="get -update"
+      - make terraform ENV=dev ARGS=apply
+      - make terraform ENV=dev ARGS="remote push"
+  staging:
+    branch: release/stg
+    commands:
+      - make terraform ENV=stg ARGS="get -update"
+      - make terraform ENV=stg ARGS=apply
+      - make terraform ENV=stg ARGS="remote push"
+  production:
+    branch: release/prd
+    commands:
+      - make terraform ENV=prd ARGS="get -update"
+      - make terraform ENV=prd ARGS=apply
+      - make terraform ENV=prd ARGS="remote push"
