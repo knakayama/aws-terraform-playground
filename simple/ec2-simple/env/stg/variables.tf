@@ -1,5 +1,5 @@
 variable "name" {
-  default = "simple-prd"
+  default = "simple-stg"
 }
 
 variable "region" {
