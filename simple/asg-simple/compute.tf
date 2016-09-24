@@ -9,6 +9,7 @@ resource "aws_launch_configuration" "lc" {
   instance_type               = "${var.asg_config["instance_type"]}"
   key_name                    = "${aws_key_pair.key_pair.key_name}"
   security_groups             = ["${aws_security_group.web.id}"]
+  user_data                   = "${file("${path.module}/user_data/ec2_cloud_config.yml")}"
   associate_public_ip_address = true
 
   root_block_device {

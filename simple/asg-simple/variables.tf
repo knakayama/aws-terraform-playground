@@ -1,5 +1,5 @@
 variable "name" {
-  default = "alb-simple"
+  default = "asg-simple"
 }
 
 variable "region" {

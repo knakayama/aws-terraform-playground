@@ -6,9 +6,8 @@ packages:
   - nginx
 
 runcmd:
+  - cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
   - wget https://aws-codedeploy-ap-northeast-1.s3.amazonaws.com/latest/install
   - ruby ./install auto
-  - cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
   - service nginx start
   - chkconfig nginx on
-  - uname -n > /usr/share/nginx/html/index.html
