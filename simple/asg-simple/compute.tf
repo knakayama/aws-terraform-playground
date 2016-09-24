@@ -10,6 +10,7 @@ resource "aws_launch_configuration" "lc" {
   key_name                    = "${aws_key_pair.key_pair.key_name}"
   security_groups             = ["${aws_security_group.web.id}"]
   user_data                   = "${file("${path.module}/user_data/ec2_cloud_config.yml")}"
+  iam_instance_profile        = "${aws_iam_instance_profile.instance_profile.id}"
   associate_public_ip_address = true
 
   root_block_device {
