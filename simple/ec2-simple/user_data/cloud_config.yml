@@ -4,3 +4,6 @@ repo_upgrade: all
 
 runcmd:
   - cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+  - wget https://aws-codedeploy-ap-northeast-1.s3.amazonaws.com/latest/install
+  - ruby ./install auto
+  - yum update -y codedeploy-agent
