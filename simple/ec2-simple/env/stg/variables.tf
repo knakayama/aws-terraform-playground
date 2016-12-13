@@ -7,7 +7,7 @@ variable "region" {
 }
 
 variable "vpc_cidr" {
-  default = "172.16.0.0/16"
+  default = "172.17.0.0/16"
 }
 
 variable "spot_config" {
