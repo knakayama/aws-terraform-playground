@@ -11,7 +11,7 @@ variable "vpc_cidr" {
 }
 
 variable "web_instance_type" {
-  default = "t2.micro"
+  default = "t2.nano"
 }
 
 data "aws_availability_zones" "az" {}
