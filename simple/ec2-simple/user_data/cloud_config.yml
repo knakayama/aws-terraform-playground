@@ -7,3 +7,5 @@ runcmd:
   - wget https://aws-codedeploy-ap-northeast-1.s3.amazonaws.com/latest/install
   - ruby ./install auto
   - yum update -y codedeploy-agent
+  - yum install nginx -y
+  - service nginx start
