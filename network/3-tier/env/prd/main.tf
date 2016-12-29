@@ -2,7 +2,7 @@ provider "aws" {
   region = "${var.region}"
 }
 
-module "maint" {
+module "main" {
   source = "../.."
 
   name     = "${var.name}"
