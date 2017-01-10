@@ -1,22 +1,6 @@
-BUCKET_NAME = knakayama-ec2-simple
-REGION = ap-northeast-1
-CD = [ -d env/${ENV} ] && cd env/${ENV}
-ENV = $1
-ARGS = $2
+default: tf
 
-terraform:
-	@${CD} && \
-		terraform ${ARGS}
+tf:
+	@cd env/$(env) && terraform ${args}
 
-remote-enable:
-	@${CD} && \
-		terraform remote config \
-		-backend=s3 \
-		-backend-config='bucket=${BUCKET_NAME}' \
-		-backend-config='key=${ENV}/terraform.tfstate' \
-		-backend-config='region=${REGION}'
-
-remote-disable:
-	@${CD} && \
-		terraform remote config \
-		-disable
+.PHONY: tf
