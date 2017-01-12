@@ -9,10 +9,11 @@ resource "aws_elb" "elb" {
   cross_zone_load_balancing   = true
 
   listener {
-    lb_port           = 80
-    lb_protocol       = "http"
-    instance_port     = 80
-    instance_protocol = "http"
+    lb_port            = 443
+    lb_protocol        = "https"
+    instance_port      = 80
+    instance_protocol  = "http"
+    ssl_certificate_id = "${var.elb_config["acm_arn"]}"
   }
 
   health_check {

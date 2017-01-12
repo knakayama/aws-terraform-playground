@@ -19,6 +19,12 @@ variable "spot_config" {
   }
 }
 
+variable "elb_config" {
+  default = {
+    acm_arn = ""
+  }
+}
+
 data "aws_availability_zones" "az" {}
 
 data "aws_ami" "amazon_linux" {
