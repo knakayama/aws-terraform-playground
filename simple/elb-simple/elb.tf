@@ -16,6 +16,13 @@ resource "aws_elb" "elb" {
     ssl_certificate_id = "${var.elb_config["acm_arn"]}"
   }
 
+  listener {
+    lb_port           = 80
+    lb_protocol       = "http"
+    instance_port     = 80
+    instance_protocol = "http"
+  }
+
   health_check {
     timeout             = 5
     target              = "HTTP:80/index.html"
