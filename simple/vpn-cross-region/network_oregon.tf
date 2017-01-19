@@ -20,17 +20,14 @@ resource "aws_subnet" "public_oregon" {
 }
 
 resource "aws_route_table" "public_oregon" {
-  provider = "aws.oregon"
-  vpc_id   = "${aws_vpc.vpc_oregon.id}"
+  provider         = "aws.oregon"
+  vpc_id           = "${aws_vpc.vpc_oregon.id}"
+  propagating_vgws = ["${aws_vpn_gateway.vgw.id}"]
 
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = "${aws_internet_gateway.public_oregon.id}"
   }
-
-  propagating_vgws = [
-    "${aws_vpn_gateway.vgw.id}",
-  ]
 }
 
 resource "aws_route_table_association" "public_oregon" {

@@ -1,3 +1,2 @@
-keys/*
+/keys/
 !keys/.gitkeep
-*tfstate*
