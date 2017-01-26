@@ -2,13 +2,8 @@ data "aws_elb_service_account" "elb_log" {}
 
 data "aws_iam_policy_document" "elb_log" {
   statement {
-    actions = [
-      "s3:PutObject",
-    ]
-
-    resources = [
-      "arn:aws:s3:::${var.name}-elb-log/*",
-    ]
+    actions   = ["s3:PutObject"]
+    resources = ["arn:aws:s3:::${var.name}-elb-log/*"]
 
     principals = {
       type = "AWS"

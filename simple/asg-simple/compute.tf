@@ -30,6 +30,7 @@ resource "aws_autoscaling_group" "asg" {
   max_size             = "${var.asg_config["max"]}"
   min_size             = "${var.asg_config["min"]}"
   load_balancers       = ["${aws_elb.elb.id}"]
+  health_check_type    = "ELB"
   force_delete         = true
 
   tag {
