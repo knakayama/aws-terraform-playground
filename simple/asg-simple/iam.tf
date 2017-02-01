@@ -9,10 +9,10 @@ resource "aws_iam_policy_attachment" "cloudwatch_full_access" {
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchFullAccess"
 }
 
-resource "aws_iam_policy_attachment" "s3_full_access" {
-  name       = "S3FullAccess"
+resource "aws_iam_policy_attachment" "ec2_for_codedeploy" {
+  name       = "AmazonEC2RoleforAWSCodeDeploy"
   roles      = ["${aws_iam_role.ec2_role.name}"]
-  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforAWSCodeDeploy"
 }
 
 resource "aws_iam_instance_profile" "instance_profile" {
