@@ -21,6 +21,7 @@ resource "aws_db_subnet_group" "rds" {
 }
 
 resource "aws_db_instance" "rds" {
+  apply_immediately          = true
   identifier                 = "${var.name}-rds"
   name                       = "rds"
   engine                     = "mysql"
@@ -28,7 +29,7 @@ resource "aws_db_instance" "rds" {
   instance_class             = "db.t2.micro"
   allocated_storage          = "8"
   storage_type               = "gp2"
-  multi_az                   = false
+  multi_az                   = true
   username                   = "master_username"
   password                   = "master_password"
   backup_retention_period    = 1
