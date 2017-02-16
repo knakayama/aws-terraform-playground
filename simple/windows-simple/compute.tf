@@ -12,7 +12,7 @@ resource "aws_spot_instance_request" "web" {
   key_name                    = "${aws_key_pair.key_pair.key_name}"
   vpc_security_group_ids      = ["${aws_security_group.web.id}"]
   subnet_id                   = "${aws_subnet.public.id}"
-  iam_instance_profile        = "${aws_iam_instance_profile.instance_profile.id}"
+  iam_instance_profile        = "${aws_iam_instance_profile.ec2.id}"
   associate_public_ip_address = true
 
   tags {

@@ -37,7 +37,7 @@ data "aws_ami" "windows" {
 
   filter {
     name   = "name"
-    values = ["Windows_Server-2012-R2_RTM-Japanese-64Bit-Base-*"]
+    values = ["Windows_Server-2012-RTM-English-64Bit-Base-*"]
   }
 
   filter {
