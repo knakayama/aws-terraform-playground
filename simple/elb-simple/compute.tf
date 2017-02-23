@@ -14,6 +14,7 @@ resource "aws_spot_instance_request" "web" {
   vpc_security_group_ids      = ["${aws_security_group.web.id}"]
   subnet_id                   = "${element(aws_subnet.application_subnet.*.id, count.index)}"
   user_data                   = "${file("${path.module}/user_data/ec2_cloud_config.yml")}"
+  iam_instance_profile        = "${aws_iam_instance_profile.instance_profile.id}"
   associate_public_ip_address = true
 
   #block_duration_minutes      = 60
