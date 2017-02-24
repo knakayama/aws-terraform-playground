@@ -1,0 +1,15 @@
+#cloud-config
+repo_update: true
+repo_upgrade: all
+
+packages:
+  - nginx
+  - mysql
+
+runcmd:
+  - cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+  - wget https://aws-codedeploy-ap-northeast-1.s3.amazonaws.com/latest/install
+  - ruby ./install auto
+  - uname -n > /usr/share/nginx/html/index.html
+  - service nginx start
+  - chkconfig nginx on
