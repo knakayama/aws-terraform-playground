@@ -20,8 +20,8 @@ resource "aws_subnet" "frontend_subnet" {
   count                   = 2
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "${cidrsubnet(var.vpc_cidr, 8, count.index+1)}"
-  availability_zone       = "${var.azs[count.index]}"
-  map_public_ip_on_launch = false
+  availability_zone       = "${data.aws_availability_zones.az.names[count.index]}"
+  map_public_ip_on_launch = true
 
   tags {
     Name = "frontend-subnet-${count.index}"
@@ -61,7 +61,7 @@ resource "aws_subnet" "application_subnet" {
   count                   = 2
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "${cidrsubnet(var.vpc_cidr, 8, count.index+101)}"
-  availability_zone       = "${var.azs[count.index]}"
+  availability_zone       = "${data.aws_availability_zones.az.names[count.index]}"
   map_public_ip_on_launch = false
 
   tags {
@@ -92,7 +92,7 @@ resource "aws_subnet" "datastore_subnet" {
   count                   = 2
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "${cidrsubnet(var.vpc_cidr, 8, count.index+201)}"
-  availability_zone       = "${var.azs[count.index]}"
+  availability_zone       = "${data.aws_availability_zones.az.names[count.index]}"
   map_public_ip_on_launch = false
 
   tags {
@@ -101,15 +101,23 @@ resource "aws_subnet" "datastore_subnet" {
 }
 
 resource "aws_vpc_endpoint" "vpc_endpoint" {
-  vpc_id          = "${aws_vpc.vpc.id}"
-  service_name    = "com.amazonaws.${var.region}.s3"
-  policy          = "${file("${path.module}/policies/vpc_endpoint_policy.json")}"
-  route_table_ids = ["${aws_route_table.frontend_subnet.id}", "${aws_route_table.application_subnet.id}"]
+  vpc_id       = "${aws_vpc.vpc.id}"
+  service_name = "${data.aws_vpc_endpoint_service.s3.service_name}"
+  policy       = "${data.aws_iam_policy_document.vpc_endpoint.json}"
+
+  route_table_ids = [
+    "${aws_route_table.frontend_subnet.id}",
+    "${aws_route_table.application_subnet.id}",
+  ]
 }
 
 resource "aws_network_acl" "acl" {
-  vpc_id     = "${aws_vpc.vpc.id}"
-  subnet_ids = ["${aws_subnet.frontend_subnet.*.id}", "${aws_subnet.application_subnet.*.id}"]
+  vpc_id = "${aws_vpc.vpc.id}"
+
+  subnet_ids = [
+    "${aws_subnet.frontend_subnet.*.id}",
+    "${aws_subnet.application_subnet.*.id}",
+  ]
 
   ingress {
     protocol   = "-1"

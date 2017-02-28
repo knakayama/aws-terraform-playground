@@ -2,8 +2,8 @@ variable "name" {}
 
 variable "vpc_cidr" {}
 
-variable "region" {}
+data "aws_availability_zones" "az" {}
 
-variable "azs" {
-  type = "list"
+data "aws_vpc_endpoint_service" "s3" {
+  service = "s3"
 }
