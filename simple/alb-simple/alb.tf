@@ -15,6 +15,13 @@ resource "aws_alb_target_group" "alb" {
   }
 }
 
+resource "aws_alb_target_group_attachment" "alb" {
+  count            = 2
+  target_group_arn = "${aws_alb_target_group.alb.arn}"
+  target_id        = "${element(aws_spot_instance_request.web.*.spot_instance_id, count.index)}"
+  port             = 80
+}
+
 resource "aws_alb" "alb" {
   name                       = "${var.name}"
   security_groups            = ["${aws_security_group.alb.id}"]
@@ -22,16 +29,10 @@ resource "aws_alb" "alb" {
   internal                   = false
   enable_deletion_protection = false
 
-  #access_logs {
-
-
-  #  bucket = "${aws_s3_bucket.alb_logs.bucket}"
-
-
-  #  prefix = "test-alb"
-
-
-  #}
+  access_logs {
+    bucket = "${aws_s3_bucket.elb_log.bucket}"
+    prefix = "demo"
+  }
 
   tags {
     Environment = "${var.name}-alb"

@@ -6,6 +6,7 @@ packages:
   - nginx
 
 runcmd:
+  - sed -i -E 's@^(ZONE=).*@\1"Asia/Tokyo"@' /etc/sysconfig/clock
   - cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
   - service nginx start
   - chkconfig nginx on

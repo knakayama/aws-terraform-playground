@@ -2,11 +2,8 @@ variable "name" {
   default = "alb-simple"
 }
 
-variable "regions" {
-  default = {
-    tokyo    = "ap-northeast-1"
-    virginia = "us-east-1"
-  }
+variable "region" {
+  default = "ap-northeast-1"
 }
 
 variable "vpc_cidr" {
@@ -22,11 +19,14 @@ variable "spot_config" {
   }
 }
 
-variable "domain" {}
+variable "acm_config" {
+  default = {
+    domain = ""
+  }
+}
 
 data "aws_acm_certificate" "acm" {
-  provider = "aws.virginia"
-  domain   = "*.${var.domain}"
+  domain = "${var.acm_config["domain"]}"
 }
 
 data "aws_availability_zones" "az" {}
