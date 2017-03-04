@@ -29,9 +29,9 @@ resource "aws_db_instance" "rds" {
   instance_class             = "db.t2.micro"
   allocated_storage          = "8"
   storage_type               = "gp2"
-  multi_az                   = true
-  username                   = "master_username"
-  password                   = "master_password"
+  multi_az                   = false
+  username                   = "test"
+  password                   = "test1234"
   backup_retention_period    = 1
   backup_window              = "04:30-05:00"
   auto_minor_version_upgrade = true
