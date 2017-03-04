@@ -19,10 +19,15 @@ variable "spot_config" {
   }
 }
 
-variable "elb_config" {
+variable "acm_config" {
   default = {
-    acm_arn = ""
+    domain = ""
   }
+}
+
+data "aws_acm_certificate" "acm" {
+  domain   = "${var.acm_config["domain"]}"
+  statuses = ["ISSUED"]
 }
 
 data "aws_availability_zones" "az" {}

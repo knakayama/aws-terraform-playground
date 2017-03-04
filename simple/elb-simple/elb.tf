@@ -13,7 +13,7 @@ resource "aws_elb" "elb" {
     lb_protocol        = "https"
     instance_port      = 80
     instance_protocol  = "http"
-    ssl_certificate_id = "${var.elb_config["acm_arn"]}"
+    ssl_certificate_id = "${data.aws_acm_certificate.acm.arn}"
   }
 
   listener {
