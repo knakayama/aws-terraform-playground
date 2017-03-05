@@ -28,6 +28,12 @@ resource "aws_iam_policy_attachment" "s3_full_access" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }
 
+resource "aws_iam_policy_attachment" "ec2_role_for_ssm" {
+  name       = "AmazonEC2RoleforSSM"
+  roles      = ["${aws_iam_role.ec2_role.name}"]
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM"
+}
+
 resource "aws_iam_instance_profile" "instance_profile" {
   name  = "${var.name}-instance-profile"
   roles = ["${aws_iam_role.ec2_role.name}"]
