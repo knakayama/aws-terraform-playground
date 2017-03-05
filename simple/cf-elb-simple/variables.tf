@@ -1,5 +1,5 @@
 variable "name" {
-  default = "cf-simple"
+  default = "cf-elb-simple"
 }
 
 variable "region" {
