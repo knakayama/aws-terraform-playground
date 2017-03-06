@@ -7,7 +7,9 @@ packages:
 
 runcmd:
   - cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+  - sed -i -E 's@^(ZONE=).*@\1"Asia/Tokyo"@' /etc/sysconfig/clock
   - wget https://aws-codedeploy-ap-northeast-1.s3.amazonaws.com/latest/install
   - ruby ./install auto
   - service nginx start
   - chkconfig nginx on
+  - uname -n > /usr/share/nginx/html/index.html
