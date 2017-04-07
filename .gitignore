@@ -6,3 +6,4 @@ terraform.out
 terraform.plan
 secret.tfvars
 secrets.tfvars
+terraform.tfstate.d/
