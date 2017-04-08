@@ -83,6 +83,12 @@ resource "aws_elb" "elb" {
     target              = "HTTPS:443/status"
     interval            = 30
   }
+
+  access_logs {
+    bucket        = "${aws_s3_bucket.elb_log.bucket}"
+    bucket_prefix = "${var.name}"
+    interval      = 5
+  }
 }
 
 resource "aws_proxy_protocol_policy" "elb" {
