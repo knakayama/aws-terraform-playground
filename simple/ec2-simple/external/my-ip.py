@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 
-from __future__ import print_function
+import requests
 import json
-import urllib2
 
 
 def main():
-    ip = json.loads(urllib2.urlopen('https://ifconfig.co/json').read())['ip']
+    ip = requests.get('https://ifconfig.co/json').json()['ip']
     print(json.dumps({'ip': ip + '/32'}))
 
 
