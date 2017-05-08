@@ -29,6 +29,6 @@ resource "aws_iam_policy_attachment" "s3_full_access" {
 }
 
 resource "aws_iam_instance_profile" "instance_profile" {
-  name  = "${var.name}-instance-profile"
-  roles = ["${aws_iam_role.ec2_role.name}"]
+  name = "${var.name}-instance-profile"
+  role = "${aws_iam_role.ec2_role.name}"
 }
